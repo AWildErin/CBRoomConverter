@@ -2,7 +2,6 @@
 using CBRoomConverter.Utility;
 using CommandLine;
 using CommandLine.Text;
-using Microsoft.Extensions.Options;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 

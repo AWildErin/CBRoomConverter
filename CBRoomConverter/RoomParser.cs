@@ -18,6 +18,14 @@ internal class RoomParser
 		{ "3", ESCPRoomZone.EntranceZone }
 	};
 
+	private static readonly Dictionary<ESCPRoomZone, string> zoneToString = new()
+	{
+		{ ESCPRoomZone.None, "Special" },
+		{ ESCPRoomZone.LightContainmentZone, "LCZ" },
+		{ ESCPRoomZone.HeavyContainmentZone, "HCZ" },
+		{ ESCPRoomZone.EntranceZone, "EZ" }
+	};
+
 	private static readonly Dictionary<string, ESCPRoomType> stringToType = new()
 	{
 		{ "1", ESCPRoomType.EndRoom },
@@ -149,6 +157,11 @@ internal class RoomParser
 			{
 				room.Zone3 = stringToZone[section.Keys["zone3"]];
 			}
+
+			// Add our properties
+			room.DataDirectory = string.Format( RoomDataFormat, zoneToString[room.Zone1] );
+			room.ArtDirectory = string.Format( RoomArtFormat, zoneToString[room.Zone1] );
+
 
 			List.Rooms.Add( room );
 		}

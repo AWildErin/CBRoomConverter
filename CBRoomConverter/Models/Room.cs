@@ -20,6 +20,8 @@ internal class Room
 	public ESCPRoomZone Zone2 { get; set; } = ESCPRoomZone.None;
 	public ESCPRoomZone Zone3 { get; set; } = ESCPRoomZone.None;
 
+	public string? DataDirectory { get; set; }
+	public string? ArtDirectory { get; set; }
 
 	// Filled from supplied MapSystem.bb
 	public List<Entity> Entities { get; set; } = new List<Entity>();
