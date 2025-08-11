@@ -8,8 +8,8 @@ namespace CBRoomConverter;
 internal class RoomParser
 {
 	// {0} is zone
-	public static readonly string RoomDataFormat = "/Game/Developers/erinsh/RoomTest2/Blueprints/Map/Rooms/{0}";
-	public static readonly string RoomArtFormat = "/Game/Developers/erinsh/RoomTest2/Art/Map/Rooms/{0}";
+	private const string roomDataFormat = "/Game/Developers/erinsh/RoomTest2/Blueprints/Map/Rooms/{0}";
+	private const string roomArtFormat = "/Game/Developers/erinsh/RoomTest2/Art/Map/Rooms/{0}";
 
 	private static readonly Dictionary<string, ESCPRoomZone> stringToZone = new()
 	{
@@ -159,11 +159,10 @@ internal class RoomParser
 			}
 
 			// Add our properties
-			room.DataDirectory = string.Format( RoomDataFormat, zoneToString[room.Zone1] );
-			room.ArtDirectory = string.Format( RoomArtFormat, zoneToString[room.Zone1] );
+			room.DataDirectory = string.Format( roomDataFormat, zoneToString[room.Zone1] );
+			room.ArtDirectory = string.Format( roomArtFormat, zoneToString[room.Zone1] );
 
-
-			List.Rooms.Add( room );
+			List.Rooms.Add(section.SectionName, room );
 		}
 	}
 }
