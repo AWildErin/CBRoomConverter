@@ -3,7 +3,7 @@ Converts rooms.ini to an intermediate json format used by the game.
 Usage: cbroomconverter.exe -i rooms.ini -o rooms.json
 
 ## Notes
-To use entities from Blitz, you must have `;[Block]` and `;[EndBlock] at the start and end of your rooms case.
+To use entities from Blitz, you must have `;[Block]` and `;[EndBlock]` at the start and end of your rooms case.
 
 Example:
 ```bb
