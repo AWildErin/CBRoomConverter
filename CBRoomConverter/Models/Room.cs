@@ -1,7 +1,10 @@
 ﻿using CBRoomConverter.Enums;
+using System.Diagnostics;
+using System.Text.Json.Serialization;
 
 namespace CBRoomConverter.Models;
 
+[DebuggerDisplay("{Name}")]
 internal class Room
 {
 	public string? Name { get; set; }
@@ -25,4 +28,13 @@ internal class Room
 
 	// Filled from supplied MapSystem.bb
 	public List<Entity> Entities { get; set; } = new List<Entity>();
+
+
+	// An internal map so we can create instances of names as needed.
+	[JsonIgnore]
+	public Dictionary<string, int> InternalNameIndex { get; set; } = new();
+
+	// Maps a name to a specific entity, will get updated each time an entity with that name is created
+	[JsonIgnore]
+	public Dictionary<string, Entity> InternalNameToEntity { get; set; } = new();
 }

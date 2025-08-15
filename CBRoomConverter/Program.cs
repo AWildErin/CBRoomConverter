@@ -2,6 +2,7 @@
 using CBRoomConverter.Utility;
 using CommandLine;
 using CommandLine.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -53,10 +54,16 @@ internal class Program
 		RoomList list = new RoomList();
 		RoomParser.ParseIni( list, opts.InputFile, opts );
 
+		if ( opts.BlitzFile is not null )
+		{
+			BlitzParser.ParseBlitz( list, opts.BlitzFile, opts );
+		}
+
 		var jsonOpts = new JsonSerializerOptions()
 		{
 			WriteIndented = true,
-			DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault
+			DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
+			Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
 		};
 
 		jsonOpts.Converters.Add( new JsonStringEnumConverter() );
