@@ -1,4 +1,5 @@
-﻿using IniParser.Model.Formatting;
+﻿using CBRoomConverter.Enums;
+using IniParser.Model.Formatting;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
@@ -7,7 +8,7 @@ namespace CBRoomConverter.Models;
 
 internal class Entity
 {
-	public string? Type { get; set; }
+	public ESCPCBRoomCreatorEntityType Type { get; set; } = ESCPCBRoomCreatorEntityType.None;
 	public string? Name { get; set; }
 	public Dictionary<string, string> Properties { get; set; } = new();
 

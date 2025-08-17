@@ -1,4 +1,5 @@
-﻿using CBRoomConverter.Models;
+﻿using CBRoomConverter.Enums;
+using CBRoomConverter.Models;
 using CBRoomConverter.Utility;
 using System.Text.RegularExpressions;
 
@@ -6,7 +7,7 @@ namespace CBRoomConverter;
 
 internal partial class BlitzParser
 {
-	private static (Entity, List<string>) CreateEntityFromFunction( Room Room, Match RegexMatch, string Type )
+	private static (Entity, List<string>) CreateEntityFromFunction( Room Room, Match RegexMatch, ESCPCBRoomCreatorEntityType Type )
 	{
 		string varName = ExtractVarName( RegexMatch.Groups[1].Value ).Trim();
 
@@ -84,7 +85,7 @@ internal partial class BlitzParser
 
 	private static bool ParseCreateDoor( Room Room, Match RegexMatch, string Line )
 	{
-		(var ent, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, "door" );
+		(var ent, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, ESCPCBRoomCreatorEntityType.Door );
 
 		// Handle props
 		ent.Properties.Add( "lvl", funcArgs[0] );
@@ -123,7 +124,7 @@ internal partial class BlitzParser
 
 	private static bool ParseLoadMeshStrict( Room Room, Match RegexMatch, string Line )
 	{
-		(var ent, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, "mesh" );
+		(var ent, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, ESCPCBRoomCreatorEntityType.Mesh );
 
 		ent.Properties.Add( "mesh", funcArgs[0] );
 
@@ -137,7 +138,7 @@ internal partial class BlitzParser
 
 	private static bool ParseCreateItem( Room Room, Match RegexMatch, string Line )
 	{
-		(var ent, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, "item" );
+		(var ent, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, ESCPCBRoomCreatorEntityType.Item );
 
 		ent.Properties.Add( "name", funcArgs[0] );
 		ent.Properties.Add( "tempname", funcArgs[1] );
@@ -174,7 +175,7 @@ internal partial class BlitzParser
 
 	private static bool ParseCreatePivot( Room Room, Match RegexMatch, string Line )
 	{
-		(var ent, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, "pivot" );
+		(var ent, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, ESCPCBRoomCreatorEntityType.Pivot );
 
 		if ( funcArgs.Count > 0 )
 		{
@@ -186,7 +187,7 @@ internal partial class BlitzParser
 
 	private static bool ParseCopyEntity( Room Room, Match RegexMatch, string Line )
 	{
-		(var newEnt, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, "FILL_ME" );
+		(var newEnt, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, ESCPCBRoomCreatorEntityType.None );
 
 		var entName = funcArgs[0];
 
@@ -221,7 +222,7 @@ internal partial class BlitzParser
 
 	private static bool ParseCreateSecurityCam( Room Room, Match RegexMatch, string Line )
 	{
-		(var ent, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, "securitycam" );
+		(var ent, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, ESCPCBRoomCreatorEntityType.SecurityCam );
 
 		AddPositionToEntity( ent, funcArgs[0], funcArgs[1], funcArgs[2] );
 
@@ -237,7 +238,7 @@ internal partial class BlitzParser
 
 	private static bool ParseCreateButton( Room Room, Match RegexMatch, string Line )
 	{
-		(var ent, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, "button" );
+		(var ent, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, ESCPCBRoomCreatorEntityType.Button );
 
 		AddPositionToEntity( ent, funcArgs[0], funcArgs[1], funcArgs[2] );
 
@@ -254,7 +255,7 @@ internal partial class BlitzParser
 
 	private static bool ParseCreateWaypoint( Room Room, Match RegexMatch, string Line )
 	{
-		(var ent, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, "waypoint" );
+		(var ent, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, ESCPCBRoomCreatorEntityType.Waypoint );
 
 		AddPositionToEntity( ent, funcArgs[0], funcArgs[1], funcArgs[2] );
 

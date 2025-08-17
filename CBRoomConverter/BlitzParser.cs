@@ -8,6 +8,27 @@ namespace CBRoomConverter;
 
 internal partial class BlitzParser
 {
+	/**
+	 * Parse the following
+	 * Valid commands to parse:
+	 * LoadMesh_Strict
+	 * PositionEntity
+	 * RotateEntity
+	 * TurnEntity
+	 * ScaleEntity
+	 * EntityTexture
+	 * EntityParent
+	 * EntityType (?)
+	 * CreateDrawPortal
+	 * CreateDoor
+	 * CreateItem
+	 * CreateSecurityCamera
+	 * CreateEmitter
+	 * CreateDevilEmitter
+	 * CreatePivot
+	 * CreateSprite
+	*/
+
 	private const string fillRoomFunction = "Function FillRoom(r.Rooms)";
 	private const string selectCase = "Select r\\RoomTemplate\\Name";
 	private const string commentSymbol = ";";
