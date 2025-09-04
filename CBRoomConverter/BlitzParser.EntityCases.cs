@@ -108,7 +108,7 @@ internal partial class BlitzParser
 		ent.Properties.Add( "room", funcArgs[5] );
 		if ( funcArgs.Count() > 6 )
 		{
-			ent.Properties.Add( "dopen", funcArgs[6] );
+			ent.Properties.Add( "open", funcArgs[6] );
 		}
 
 		if ( funcArgs.Count() > 7 )
