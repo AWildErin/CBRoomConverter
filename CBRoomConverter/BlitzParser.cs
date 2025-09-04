@@ -1,6 +1,5 @@
 ﻿using CBRoomConverter.Models;
 using CBRoomConverter.Utility;
-using IniParser.Model.Formatting;
 using System.Collections.Immutable;
 using System.Text.RegularExpressions;
 
@@ -169,7 +168,7 @@ internal partial class BlitzParser
 
 		foreach ( var pair in roomCaseText )
 		{
-			if (Opts.Verbose)
+			if ( Opts.Verbose )
 			{
 				Log.Debug( $"Parsing {pair.Key} " );
 			}
@@ -191,7 +190,7 @@ internal partial class BlitzParser
 	{
 		foreach ( var line in ScriptText )
 		{
-			if (line.IndexOf(':') != -1)
+			if ( line.IndexOf( ':' ) != -1 )
 			{
 				List<string> multiLineCalls = line
 							.Split( ":" )
@@ -202,9 +201,9 @@ internal partial class BlitzParser
 							} )
 							.ToList();
 
-				foreach(var subLine in multiLineCalls)
+				foreach ( var subLine in multiLineCalls )
 				{
-					if (!ParseScriptText(Room, subLine, Opts))
+					if ( !ParseScriptText( Room, subLine, Opts ) )
 					{
 						return false;
 					}

@@ -162,7 +162,7 @@ internal class RoomParser
 			room.DataDirectory = string.Format( roomDataFormat, zoneToString[room.Zone1] );
 			room.ArtDirectory = string.Format( roomArtFormat, zoneToString[room.Zone1] );
 
-			List.Rooms.Add(section.SectionName, room );
+			List.Rooms.Add( section.SectionName, room );
 		}
 	}
 }

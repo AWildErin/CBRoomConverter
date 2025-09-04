@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace CBRoomConverter.Models;
 
-[DebuggerDisplay("{Name}")]
+[DebuggerDisplay( "{Name}" )]
 internal class Room
 {
 	public string? Name { get; set; }
@@ -13,7 +13,7 @@ internal class Room
 
 	public int Commoness { get; set; } = 0;
 
-	public bool Large {  get; set; } = false;
+	public bool Large { get; set; } = false;
 	public bool DisableDecals { get; set; } = false;
 	public bool UseVolumeLighting { get; set; } = false;
 	public bool DisableOverlapCheck { get; set; } = false;
