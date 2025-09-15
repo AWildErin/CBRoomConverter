@@ -1,0 +1,3 @@
+[submodule "ThirdParty/AWildErin.Utility"]
+	path = ThirdParty/AWildErin.Utility
+	url = https://github.com/AWildErin/AWildErin.Utility.git
