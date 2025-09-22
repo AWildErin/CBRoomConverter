@@ -59,6 +59,7 @@ internal partial class BlitzParser
 
 	private static readonly Regex caseRegex = new( "Case \"(.*)\"" );
 	private static readonly Regex funcWithReturnRegex = new( @"(.*?)\s*=\s*(.*?)\((.*)\)" );
+	private static readonly Regex funcCallRegex = new( @"\s*(.*?)\((.*)\)" );
 	private static readonly Regex objectAssignmentRegex = new( @".*?[\\](.*?) =" );
 	private static readonly Regex posNumberRegex = new( @"([+\-*/]\s*|\b)(\d+(?:\.\d+)?)" );
 
@@ -223,15 +224,32 @@ internal partial class BlitzParser
 
 	private static bool ParseScriptText( Room Room, string Line, Options Opts )
 	{
-		// @todo Split calls with : and parse them as well, for that we should probably have ParseScriptLine
+		// Check our regexes
+		Match? match = null;
+		string funcName = string.Empty;
 
-		if ( !funcWithReturnRegex.IsMatch( Line ) )
+		if ( funcWithReturnRegex.IsMatch( Line ) )
+		{
+			match = funcWithReturnRegex.Match( Line );
+			funcName = match.Groups[2].Value;
+		}
+		else if ( funcCallRegex.IsMatch( Line ) )
+		{
+			match = funcCallRegex.Match( Line );
+			funcName = match.Groups[1].Value;
+		}
+		else
 		{
 			return true;
 		}
 
-		var match = funcWithReturnRegex.Match( Line );
-		var funcName = match.Groups[2].Value;
+		if ( match is null )
+		{
+			throw new ArgumentNullException( nameof( match ) );
+		}
+
+		// Clean up any trailing spaces
+		funcName = funcName.Trim();
 
 		if ( skippedFunctions.Contains( funcName ) )
 		{
