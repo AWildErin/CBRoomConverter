@@ -87,11 +87,34 @@ internal partial class BlitzParser
 		return output;
 	}
 
-	private static void AddPositionToEntity( Entity Entity, string X, string Y, string Z )
+	private static void AddOrUpdateEntityPosition( Entity Entity, string X, string Y, string Z )
 	{
-		Entity.Properties.Add( "x", ExtractPosition( X ) );
-		Entity.Properties.Add( "y", ExtractPosition( Y ) );
-		Entity.Properties.Add( "z", ExtractPosition( Z ) );
+		if (Entity.Properties.ContainsKey("x"))
+		{
+			Entity.Properties["x"] = ExtractPosition( X );
+		}
+		else
+		{
+			Entity.Properties.Add( "x", ExtractPosition( X ) );
+		}
+
+		if ( Entity.Properties.ContainsKey( "y" ) )
+		{
+			Entity.Properties["y"] = ExtractPosition( Y );
+		}
+		else
+		{
+			Entity.Properties.Add( "y", ExtractPosition( Y ) );
+		}
+
+		if ( Entity.Properties.ContainsKey( "z" ) )
+		{
+			Entity.Properties["z"] = ExtractPosition( Z );
+		}
+		else
+		{
+			Entity.Properties.Add( "z", ExtractPosition( Z ) );
+		}
 	}
 
 	private static bool ParseCreateDoor( Room Room, Match RegexMatch, string Line )
@@ -101,7 +124,7 @@ internal partial class BlitzParser
 		// Handle props
 		ent.Properties.Add( "lvl", funcArgs[0] );
 
-		AddPositionToEntity( ent, funcArgs[1], funcArgs[2], funcArgs[3] );
+		AddOrUpdateEntityPosition( ent, funcArgs[1], funcArgs[2], funcArgs[3] );
 
 		ent.Properties.Add( "angle", funcArgs[4] );
 		ent.Properties.Add( "room", funcArgs[5] );
@@ -154,7 +177,7 @@ internal partial class BlitzParser
 		ent.Properties.Add( "name", funcArgs[0] );
 		ent.Properties.Add( "tempname", funcArgs[1] );
 
-		AddPositionToEntity( ent, funcArgs[2], funcArgs[3], funcArgs[4] );
+		AddOrUpdateEntityPosition( ent, funcArgs[2], funcArgs[3], funcArgs[4] );
 
 		if ( funcArgs.Count > 5 )
 		{
@@ -235,7 +258,7 @@ internal partial class BlitzParser
 	{
 		(var ent, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, ESCPCBRoomCreatorEntityType.SecurityCam );
 
-		AddPositionToEntity( ent, funcArgs[0], funcArgs[1], funcArgs[2] );
+		AddOrUpdateEntityPosition( ent, funcArgs[0], funcArgs[1], funcArgs[2] );
 
 		ent.Properties.Add( "room", funcArgs[3] );
 
@@ -251,7 +274,7 @@ internal partial class BlitzParser
 	{
 		(var ent, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, ESCPCBRoomCreatorEntityType.Button );
 
-		AddPositionToEntity( ent, funcArgs[0], funcArgs[1], funcArgs[2] );
+		AddOrUpdateEntityPosition( ent, funcArgs[0], funcArgs[1], funcArgs[2] );
 
 		ent.Properties.Add( "pitch", funcArgs[3] );
 		ent.Properties.Add( "yaw", funcArgs[4] );
@@ -268,7 +291,7 @@ internal partial class BlitzParser
 	{
 		(var ent, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, ESCPCBRoomCreatorEntityType.Waypoint );
 
-		AddPositionToEntity( ent, funcArgs[0], funcArgs[1], funcArgs[2] );
+		AddOrUpdateEntityPosition( ent, funcArgs[0], funcArgs[1], funcArgs[2] );
 
 		ent.Properties.Add( "door", funcArgs[3] );
 		ent.Properties.Add( "room", funcArgs[4] );
