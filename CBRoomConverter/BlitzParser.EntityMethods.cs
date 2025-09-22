@@ -1,5 +1,6 @@
 ﻿using AWildErin.Utility;
 using CBRoomConverter.Enums;
+using CBRoomConverter.FunctionArguments;
 using CBRoomConverter.Models;
 using System.Text.RegularExpressions;
 
@@ -7,7 +8,7 @@ namespace CBRoomConverter;
 
 internal partial class BlitzParser
 {
-	private static bool ParsePositionEntity( Room Room, Match RegexMatch, string Line )
+	private static bool ParsePositionEntity( Room Room, PositionEntityFuncArgs FuncArgs )
 	{
 		// Generally, when we position objects for this room they will be in a format like:
 		// - r\RoomDoors[1]\buttons[0]
@@ -24,9 +25,8 @@ internal partial class BlitzParser
 		// Args 2 = PosY
 		// Args 3 = PosZ
 
-		var funcArgs = ExtractArgsFromMethodCall( RegexMatch );
 
-		var objectName = funcArgs[0];
+		var objectName = FuncArgs.entity;
 
 		// Check to see if the object exists first
 		Entity? foundEntity = Room.FindEntity( objectName );
@@ -56,11 +56,40 @@ internal partial class BlitzParser
 			return false;
 		}
 
-		string x = funcArgs[1];
-		string y = funcArgs[2];
-		string z = funcArgs[3];
+		AddOrUpdateEntityPosition( foundEntity, FuncArgs.x, FuncArgs.y, FuncArgs.z );
 
-		AddOrUpdateEntityPosition( foundEntity, x, y, z );
+		return true;
+	}
+
+	private static bool ParseCopyEntity( Room Room, CopyEntityFuncArgs FuncArgs )
+	{
+		//(var newEnt, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, ESCPCBRoomCreatorEntityType.None );
+		var newEnt = CreateEntity( Room, FuncArgs.VariableName, ESCPCBRoomCreatorEntityType.None );
+
+		var origEnt = Room.InternalNameToEntity.GetValueOrDefault( newEnt.Name! );
+		if ( origEnt is null )
+		{
+			Room.Entities.Remove( newEnt );
+			return false;
+		}
+
+		//Log.Info( $"Copying {entName} inside {Room.Name}" );
+
+		newEnt.Type = origEnt.Type;
+		newEnt.Properties = new( origEnt.Properties );
+
+		if ( FuncArgs.parent is not null )
+		{
+
+			if ( newEnt.Properties.ContainsKey( "parent" ) )
+			{
+				newEnt.Properties["parent"] = FuncArgs.parent;
+			}
+			else
+			{
+				newEnt.Properties.Add( "parent", FuncArgs.parent );
+			}
+		}
 
 		return true;
 	}

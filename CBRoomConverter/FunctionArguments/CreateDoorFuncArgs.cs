@@ -1,0 +1,40 @@
+using CBRoomConverter.Reflection;
+
+namespace CBRoomConverter.FunctionArguments;
+
+[BlitzFuncArgs( "CreateDoor" )]
+internal class CreateDoorFuncArgs : BaseFuncArgs
+{
+	[BlitzFuncArgIndex( "lvl", 0, Optional: false )]
+	public required string lvl { get; set; }
+
+	[BlitzFuncArgIndex( "x", 1, Optional: false )]
+	public required string x { get; set; }
+
+	[BlitzFuncArgIndex( "y", 2, Optional: false )]
+	public required string y { get; set; }
+
+	[BlitzFuncArgIndex( "z", 3, Optional: false )]
+	public required string z { get; set; }
+
+	[BlitzFuncArgIndex( "angle", 4, Optional: false )]
+	public required string angle { get; set; }
+
+	[BlitzFuncArgIndex( "room", 5, Optional: false )]
+	public required string room { get; set; }
+
+	[BlitzFuncArgIndex( "dopen", 6, Optional: true )]
+	public string? dopen { get; set; }
+
+	[BlitzFuncArgIndex( "big", 7, Optional: true )]
+	public string? big { get; set; }
+
+	[BlitzFuncArgIndex( "keycard", 8, Optional: true )]
+	public string? keycard { get; set; }
+
+	[BlitzFuncArgIndex( "code", 9, Optional: true )]
+	public string? code { get; set; }
+
+	[BlitzFuncArgIndex( "useCollisionMesh", 10, Optional: true )]
+	public string? useCollisionMesh { get; set; }
+}

@@ -1,0 +1,22 @@
+using CBRoomConverter.Reflection;
+
+namespace CBRoomConverter.FunctionArguments;
+
+[BlitzFuncArgs( "PositionEntity" )]
+internal class PositionEntityFuncArgs : BaseFuncArgs
+{
+	[BlitzFuncArgIndex( "entity", 0, Optional: false )]
+	public required string entity { get; set; }
+
+	[BlitzFuncArgIndex( "x", 1, Optional: false )]
+	public required string x { get; set; }
+
+	[BlitzFuncArgIndex( "y", 2, Optional: false )]
+	public required string y { get; set; }
+
+	[BlitzFuncArgIndex( "z", 3, Optional: false )]
+	public required string z { get; set; }
+
+	[BlitzFuncArgIndex( "global", 4, Optional: true )]
+	public string? global { get; set; }
+}

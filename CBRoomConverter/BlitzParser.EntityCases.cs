@@ -1,4 +1,5 @@
 ﻿using CBRoomConverter.Enums;
+using CBRoomConverter.FunctionArguments;
 using CBRoomConverter.Models;
 using System.Text.RegularExpressions;
 
@@ -6,78 +7,62 @@ namespace CBRoomConverter;
 
 internal partial class BlitzParser
 {
-	/// <summary>
-	/// Only works for functions gathered from funcCallRegex
-	/// </summary>
-	private static List<string> ExtractArgsFromMethodCall( Match Match )
+	private static List<string> ExtractArgsFromString( string Args )
 	{
-		List<string> funcArgs = Match.Groups[2].Value
-						.Split( "," )
-						.Select( x =>
-						{
-							x = x.Trim();
-							x = x.Trim( '"' );
-							return x;
-						} )
-						.ToList();
+		// Get the args, trim whitespace, and remove quotes as we don't need them
+		List<string> funcArgs = Args
+				.Split( "," )
+				.Select( x =>
+				{
+					x = x.Trim();
+					x = x.Trim( '"' );
+					return x;
+				} )
+				.ToList();
 
 		return funcArgs;
 	}
 
-	private static (Entity, List<string>) CreateEntityFromFunction( Room Room, Match RegexMatch, ESCPCBRoomCreatorEntityType Type )
+	private static Entity CreateEntity( Room Room, string EntityName, ESCPCBRoomCreatorEntityType EntityType )
 	{
-		string varName = ExtractVarName( RegexMatch.Groups[1].Value ).Trim();
-
-		// Get the args, trim whitespace, and remove quotes as we don't need them
-		List<string> funcArgs = RegexMatch.Groups[3].Value
-								.Split( "," )
-								.Select( x =>
-								{
-									x = x.Trim();
-									x = x.Trim( '"' );
-									return x;
-								} )
-								.ToList();
-
-		if ( Room.InternalNameIndex.ContainsKey( varName ) )
+		if ( Room.InternalNameIndex.ContainsKey( EntityName ) )
 		{
 			// Increase the name index
-			Room.InternalNameIndex[varName]++;
+			Room.InternalNameIndex[EntityName]++;
 		}
 		else
 		{
-			Room.InternalNameIndex.Add( varName, 0 );
+			Room.InternalNameIndex.Add( EntityName, 0 );
 		}
 
 		string? entName = null;
-		if ( Room.InternalNameIndex[varName] > 0 )
+		if ( Room.InternalNameIndex[EntityName] > 0 )
 		{
-			entName = $"{varName}_{Room.InternalNameIndex[varName]}";
+			entName = $"{EntityName}_{Room.InternalNameIndex[EntityName]}";
 		}
 		else
 		{
-			entName = varName;
+			entName = EntityName;
 		}
 
 		var ent = new Entity()
 		{
-			Type = Type,
+			Type = EntityType,
 			Name = entName
 		};
 
-
 		Room.Entities.Add( ent );
 
-		if ( Room.InternalNameToEntity.ContainsKey( varName ) )
+		if ( Room.InternalNameToEntity.ContainsKey( EntityName ) )
 		{
-			Room.InternalNameToEntity[varName] = ent;
+			Room.InternalNameToEntity[EntityName] = ent;
 		}
 		else
 		{
-			Room.InternalNameToEntity.Add( varName, ent );
+			Room.InternalNameToEntity.Add( EntityName, ent );
 		}
 
-		return (ent, funcArgs);
+		return ent;
 	}
 
 	// Extracts the raw numerical value from the given input
@@ -107,7 +92,7 @@ internal partial class BlitzParser
 
 	private static void AddOrUpdateEntityPosition( Entity Entity, string X, string Y, string Z )
 	{
-		if (Entity.Properties.ContainsKey("x"))
+		if ( Entity.Properties.ContainsKey( "x" ) )
 		{
 			Entity.Properties["x"] = ExtractPosition( X );
 		}
@@ -135,184 +120,68 @@ internal partial class BlitzParser
 		}
 	}
 
-	private static bool ParseCreateDoor( Room Room, Match RegexMatch, string Line )
+	private static bool CreateBasicEntity( Room Room, BaseFuncArgs FuncArgs, ESCPCBRoomCreatorEntityType EntityType )
 	{
-		(var ent, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, ESCPCBRoomCreatorEntityType.Door );
+		var ent = CreateEntity( Room, FuncArgs.VariableName, EntityType );
+		FuncArgs.AddPropertiesToEntity( ent );
+		return true;
+	}
 
-		// Handle props
-		ent.Properties.Add( "lvl", funcArgs[0] );
+	private static bool ParseCreateDoor( Room Room, CreateDoorFuncArgs FuncArgs )
+	{
+		var ent = CreateEntity( Room, FuncArgs.VariableName, ESCPCBRoomCreatorEntityType.Door );
 
-		AddOrUpdateEntityPosition( ent, funcArgs[1], funcArgs[2], funcArgs[3] );
+		// Add child buttons
+		var button = new Entity();
+		button.Name = "buttons[0]";
+		ent.ChildEntities.Add( button );
 
-		ent.Properties.Add( "angle", funcArgs[4] );
-		ent.Properties.Add( "room", funcArgs[5] );
-		if ( funcArgs.Count() > 6 )
-		{
-			ent.Properties.Add( "open", funcArgs[6] );
-		}
+		button = new Entity();
+		button.Name = "buttons[1]";
+		ent.ChildEntities.Add( button );
 
-		if ( funcArgs.Count() > 7 )
-		{
-			ent.Properties.Add( "big", funcArgs[7] );
-		}
-
-		if ( funcArgs.Count() > 8 )
-		{
-			ent.Properties.Add( "keycard", funcArgs[8] );
-		}
-
-		if ( funcArgs.Count() > 9 )
-		{
-			ent.Properties.Add( "code", funcArgs[9] );
-		}
-
-		if ( funcArgs.Count() > 10 )
-		{
-			ent.Properties.Add( "usecollisionmodel", funcArgs[10] );
-		}
+		FuncArgs.AddPropertiesToEntity( ent );
+		AddOrUpdateEntityPosition( ent, FuncArgs.x, FuncArgs.y, FuncArgs.z );
 
 		return true;
 	}
 
-	private static bool ParseLoadMeshStrict( Room Room, Match RegexMatch, string Line )
+	private static bool ParseCreateItem( Room Room, CreateItemFuncArgs FuncArgs )
 	{
-		(var ent, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, ESCPCBRoomCreatorEntityType.Mesh );
+		var ent = CreateEntity( Room, FuncArgs.VariableName, ESCPCBRoomCreatorEntityType.Item );
 
-		ent.Properties.Add( "mesh", funcArgs[0] );
-
-		if ( funcArgs.Count > 1 )
-		{
-			ent.Properties.Add( "parent", funcArgs[1] );
-		}
+		FuncArgs.AddPropertiesToEntity( ent );
+		AddOrUpdateEntityPosition( ent, FuncArgs.x, FuncArgs.y, FuncArgs.z );
 
 		return true;
 	}
 
-	private static bool ParseCreateItem( Room Room, Match RegexMatch, string Line )
+	private static bool ParseCreateSecurityCam( Room Room, CreateSecurityCamFuncArgs FuncArgs )
 	{
-		(var ent, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, ESCPCBRoomCreatorEntityType.Item );
+		var ent = CreateEntity( Room, FuncArgs.VariableName, ESCPCBRoomCreatorEntityType.SecurityCam );
 
-		ent.Properties.Add( "name", funcArgs[0] );
-		ent.Properties.Add( "tempname", funcArgs[1] );
-
-		AddOrUpdateEntityPosition( ent, funcArgs[2], funcArgs[3], funcArgs[4] );
-
-		if ( funcArgs.Count > 5 )
-		{
-			ent.Properties.Add( "r", funcArgs[5] );
-		}
-
-		if ( funcArgs.Count > 6 )
-		{
-			ent.Properties.Add( "g", funcArgs[6] );
-		}
-
-		if ( funcArgs.Count > 7 )
-		{
-			ent.Properties.Add( "b", funcArgs[7] );
-		}
-
-		if ( funcArgs.Count > 8 )
-		{
-			ent.Properties.Add( "a", funcArgs[8] );
-		}
-
-		if ( funcArgs.Count > 9 )
-		{
-			ent.Properties.Add( "invslots", funcArgs[9] );
-		}
+		FuncArgs.AddPropertiesToEntity( ent );
+		AddOrUpdateEntityPosition( ent, FuncArgs.x, FuncArgs.y, FuncArgs.z );
 
 		return true;
 	}
 
-	private static bool ParseCreatePivot( Room Room, Match RegexMatch, string Line )
+	private static bool ParseCreateButton( Room Room, CreateButtonFuncArgs FuncArgs )
 	{
-		(var ent, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, ESCPCBRoomCreatorEntityType.Pivot );
+		var ent = CreateEntity( Room, FuncArgs.VariableName, ESCPCBRoomCreatorEntityType.Button );
 
-		if ( funcArgs.Count > 0 )
-		{
-			ent.Properties.Add( "parent", funcArgs[0] );
-		}
+		FuncArgs.AddPropertiesToEntity( ent );
+		AddOrUpdateEntityPosition( ent, FuncArgs.x, FuncArgs.y, FuncArgs.z );
 
 		return true;
 	}
 
-	private static bool ParseCopyEntity( Room Room, Match RegexMatch, string Line )
+	private static bool ParseCreateWaypoint( Room Room, CreateWaypointFuncArgs FuncArgs )
 	{
-		(var newEnt, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, ESCPCBRoomCreatorEntityType.None );
+		var ent = CreateEntity( Room, FuncArgs.VariableName, ESCPCBRoomCreatorEntityType.Waypoint );
 
-		var entName = funcArgs[0];
-
-		var origEnt = Room.InternalNameToEntity.GetValueOrDefault( entName );
-		if ( origEnt is null )
-		{
-			Room.Entities.Remove( newEnt );
-			return false;
-		}
-
-		//Log.Info( $"Copying {entName} inside {Room.Name}" );
-
-		newEnt.Type = origEnt.Type;
-		newEnt.Properties = new( origEnt.Properties );
-
-		if ( funcArgs.Count > 1 )
-		{
-			var parent = funcArgs[1];
-			if ( newEnt.Properties.ContainsKey( "parent" ) )
-			{
-				newEnt.Properties["parent"] = parent;
-			}
-			else
-			{
-				newEnt.Properties.Add( "parent", parent );
-			}
-		}
-
-
-		return true;
-	}
-
-	private static bool ParseCreateSecurityCam( Room Room, Match RegexMatch, string Line )
-	{
-		(var ent, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, ESCPCBRoomCreatorEntityType.SecurityCam );
-
-		AddOrUpdateEntityPosition( ent, funcArgs[0], funcArgs[1], funcArgs[2] );
-
-		ent.Properties.Add( "room", funcArgs[3] );
-
-		if ( funcArgs.Count > 4 )
-		{
-			ent.Properties.Add( "screen", funcArgs[4] );
-		}
-
-		return true;
-	}
-
-	private static bool ParseCreateButton( Room Room, Match RegexMatch, string Line )
-	{
-		(var ent, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, ESCPCBRoomCreatorEntityType.Button );
-
-		AddOrUpdateEntityPosition( ent, funcArgs[0], funcArgs[1], funcArgs[2] );
-
-		ent.Properties.Add( "pitch", funcArgs[3] );
-		ent.Properties.Add( "yaw", funcArgs[4] );
-
-		if ( funcArgs.Count > 5 )
-		{
-			ent.Properties.Add( "roll", funcArgs[5] );
-		}
-
-		return true;
-	}
-
-	private static bool ParseCreateWaypoint( Room Room, Match RegexMatch, string Line )
-	{
-		(var ent, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, ESCPCBRoomCreatorEntityType.Waypoint );
-
-		AddOrUpdateEntityPosition( ent, funcArgs[0], funcArgs[1], funcArgs[2] );
-
-		ent.Properties.Add( "door", funcArgs[3] );
-		ent.Properties.Add( "room", funcArgs[4] );
+		FuncArgs.AddPropertiesToEntity( ent );
+		AddOrUpdateEntityPosition( ent, FuncArgs.x, FuncArgs.y, FuncArgs.z );
 
 		return true;
 	}

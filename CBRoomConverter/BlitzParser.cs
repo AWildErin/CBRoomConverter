@@ -1,5 +1,9 @@
 ﻿using AWildErin.Utility;
+using CBRoomConverter.Enums;
+using CBRoomConverter.FunctionArguments;
 using CBRoomConverter.Models;
+using CBRoomConverter.Reflection;
+using IniParser.Model.Formatting;
 using System.Collections.Immutable;
 using System.Text.RegularExpressions;
 
@@ -176,7 +180,10 @@ internal partial class BlitzParser
 
 			if ( !List.Rooms.ContainsKey( pair.Key ) )
 			{
-				Log.Warn( $" Room {pair.Key} was inside the function, but not in the rooms list!" );
+				if ( Opts.Verbose )
+				{
+					Log.Warn( $" Room {pair.Key} was inside the function, but not in the rooms list!" );
+				}
 				continue;
 			}
 
@@ -254,17 +261,23 @@ internal partial class BlitzParser
 	{
 		// Check our regexes
 		Match? match = null;
+		string variableName = string.Empty;
 		string funcName = string.Empty;
+		string funcArguments = string.Empty;
 
 		if ( funcWithReturnRegex.IsMatch( Line ) )
 		{
 			match = funcWithReturnRegex.Match( Line );
+			variableName = match.Groups[1].Value;
 			funcName = match.Groups[2].Value;
+			funcArguments = match.Groups[3].Value;
 		}
 		else if ( funcCallRegex.IsMatch( Line ) )
 		{
 			match = funcCallRegex.Match( Line );
 			funcName = match.Groups[1].Value;
+			funcArguments = match.Groups[2].Value;
+			variableName = funcName;
 		}
 		else
 		{
@@ -277,7 +290,9 @@ internal partial class BlitzParser
 		}
 
 		// Clean up any trailing spaces
+		variableName = variableName.Trim();
 		funcName = funcName.Trim();
+		funcArguments = funcArguments.Trim();
 
 		if ( skippedFunctions.Contains( funcName ) )
 		{
@@ -288,11 +303,20 @@ internal partial class BlitzParser
 			return true;
 		}
 
+		// Attempt to find the func args type
+		var funcArgsObj = ReflectionHelper.CreateFuncArgs( funcName, ExtractArgsFromString( funcArguments ) );
+		if ( funcArgsObj is null )
+		{
+			Log.Warn( $"Failed to find class for {funcName}" );
+			return true;
+		}
+		funcArgsObj.VariableName = variableName;
+
 		switch ( funcName )
 		{
 			case "CreateDoor":
 				{
-					if ( !ParseCreateDoor( Room, match, Line ) )
+					if ( !ParseCreateDoor( Room, (CreateDoorFuncArgs)funcArgsObj ) )
 					{
 						Log.Error( $"Failed to create door for {Room.Name}" );
 						return false;
@@ -301,10 +325,10 @@ internal partial class BlitzParser
 					break;
 				}
 
-			case "LoadAnimMesh_Strict":
 			case "LoadMesh_Strict":
+			case "LoadAnimMesh_Strict":
 				{
-					if ( !ParseLoadMeshStrict( Room, match, Line ) )
+					if ( !CreateBasicEntity( Room, funcArgsObj, ESCPCBRoomCreatorEntityType.Mesh ) )
 					{
 						Log.Error( $"Failed to create mesh for {Room.Name}" );
 						return false;
@@ -315,7 +339,7 @@ internal partial class BlitzParser
 
 			case "CreateItem":
 				{
-					if ( !ParseCreateItem( Room, match, Line ) )
+					if ( !ParseCreateItem( Room, (CreateItemFuncArgs)funcArgsObj ) )
 					{
 						Log.Error( $"Failed to create item for {Room.Name}" );
 						return false;
@@ -324,33 +348,9 @@ internal partial class BlitzParser
 					break;
 				}
 
-			case "CreatePivot":
-				{
-					if ( !ParseCreatePivot( Room, match, Line ) )
-					{
-						Log.Error( $"Failed to create pivot for {Room.Name}" );
-						return false;
-					}
-
-					break;
-				}
-
-			case "CopyEntity":
-				{
-					if ( !ParseCopyEntity( Room, match, Line ) )
-					{
-						if ( Opts.Verbose )
-						{
-							Log.Warn( $"Failed to copy {match.Groups[1].Value}. Please check the source. If this entity was anything other than a sprite or decal, please create an issue!" );
-						}
-					}
-
-					break;
-				}
-
 			case "CreateSecurityCam":
 				{
-					if ( !ParseCreateSecurityCam( Room, match, Line ) )
+					if ( !ParseCreateSecurityCam( Room, (CreateSecurityCamFuncArgs)funcArgsObj ) )
 					{
 						Log.Error( $"Failed to create securitycam for {Room.Name}" );
 						return false;
@@ -361,7 +361,7 @@ internal partial class BlitzParser
 
 			case "CreateButton":
 				{
-					if ( !ParseCreateButton( Room, match, Line ) )
+					if ( !ParseCreateButton( Room, (CreateButtonFuncArgs)funcArgsObj ) )
 					{
 						Log.Error( $"Failed to create button for {Room.Name}" );
 						return false;
@@ -372,9 +372,20 @@ internal partial class BlitzParser
 
 			case "CreateWaypoint":
 				{
-					if ( !ParseCreateWaypoint( Room, match, Line ) )
+					if ( !ParseCreateWaypoint( Room, (CreateWaypointFuncArgs)funcArgsObj ) )
 					{
 						Log.Error( $"Failed to create button for {Room.Name}" );
+						return false;
+					}
+
+					break;
+				}
+
+			case "CreatePivot":
+				{
+					if ( !CreateBasicEntity( Room, funcArgsObj, ESCPCBRoomCreatorEntityType.Pivot ) )
+					{
+						Log.Error( $"Failed to create pivot for {Room.Name}" );
 						return false;
 					}
 
@@ -384,9 +395,22 @@ internal partial class BlitzParser
 			// Entity methods
 			case "PositionEntity":
 				{
-					if ( !ParsePositionEntity( Room, match, Line ) )
+					if ( !ParsePositionEntity( Room, (PositionEntityFuncArgs)funcArgsObj ) )
 					{
 						Log.Error( $"failed to parse position entity call for {Room.Name}" );
+					}
+
+					break;
+				}
+
+			case "CopyEntity":
+				{
+					if ( !ParseCopyEntity( Room, (CopyEntityFuncArgs)funcArgsObj ) )
+					{
+						if ( Opts.Verbose )
+						{
+							Log.Warn( $"Failed to copy {match.Groups[1].Value}. Please check the source. If this entity was anything other than a sprite or decal, please create an issue!" );
+						}
 					}
 
 					break;

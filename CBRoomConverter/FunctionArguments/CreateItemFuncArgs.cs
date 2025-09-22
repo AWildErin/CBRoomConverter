@@ -1,0 +1,37 @@
+using CBRoomConverter.Reflection;
+
+namespace CBRoomConverter.FunctionArguments;
+
+[BlitzFuncArgs( "CreateItem" )]
+internal class CreateItemFuncArgs : BaseFuncArgs
+{
+	[BlitzFuncArgIndex( "name", 0, Optional: false )]
+	public required string name { get; set; }
+
+	[BlitzFuncArgIndex( "tempname", 1, Optional: false )]
+	public required string tempname { get; set; }
+
+	[BlitzFuncArgIndex( "x", 2, Optional: false )]
+	public required string x { get; set; }
+
+	[BlitzFuncArgIndex( "y", 3, Optional: false )]
+	public required string y { get; set; }
+
+	[BlitzFuncArgIndex( "z", 4, Optional: false )]
+	public required string z { get; set; }
+
+	[BlitzFuncArgIndex( "r", 5, Optional: true )]
+	public string? r { get; set; }
+
+	[BlitzFuncArgIndex( "g", 6, Optional: true )]
+	public string? g { get; set; }
+
+	[BlitzFuncArgIndex( "b", 7, Optional: true )]
+	public string? b { get; set; }
+
+	[BlitzFuncArgIndex( "a", 8, Optional: true )]
+	public string? a { get; set; }
+
+	[BlitzFuncArgIndex( "invSlots", 9, Optional: true )]
+	public string? invSlots { get; set; }
+}

@@ -1,0 +1,25 @@
+using CBRoomConverter.Reflection;
+
+namespace CBRoomConverter.FunctionArguments;
+
+[BlitzFuncArgs( "CreateButton" )]
+internal class CreateButtonFuncArgs : BaseFuncArgs
+{
+	[BlitzFuncArgIndex( "x", 0, Optional: false )]
+	public required string x { get; set; }
+
+	[BlitzFuncArgIndex( "y", 1, Optional: false )]
+	public required string y { get; set; }
+
+	[BlitzFuncArgIndex( "z", 2, Optional: false )]
+	public required string z { get; set; }
+
+	[BlitzFuncArgIndex( "pitch", 3, Optional: false )]
+	public required string pitch { get; set; }
+
+	[BlitzFuncArgIndex( "yaw", 4, Optional: false )]
+	public required string yaw { get; set; }
+
+	[BlitzFuncArgIndex( "roll", 5, Optional: true )]
+	public string? roll { get; set; }
+}
