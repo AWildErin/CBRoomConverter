@@ -307,7 +307,10 @@ internal partial class BlitzParser
 		var funcArgsObj = ReflectionHelper.CreateFuncArgs( funcName, ExtractArgsFromString( funcArguments ) );
 		if ( funcArgsObj is null )
 		{
-			Log.Warn( $"Failed to find class for {funcName}" );
+			if ( Opts.Verbose )
+			{
+				Log.Warn( $"Skipping {funcName} as it did not have a corresponding func args class" );
+			}
 			return true;
 		}
 		funcArgsObj.VariableName = variableName;
