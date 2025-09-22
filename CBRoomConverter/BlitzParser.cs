@@ -3,7 +3,6 @@ using CBRoomConverter.Enums;
 using CBRoomConverter.FunctionArguments;
 using CBRoomConverter.Models;
 using CBRoomConverter.Reflection;
-using IniParser.Model.Formatting;
 using System.Collections.Immutable;
 using System.Text.RegularExpressions;
 
@@ -319,7 +318,7 @@ internal partial class BlitzParser
 		{
 			case "CreateDoor":
 				{
-					if ( !ParseCreateDoor( Room, (CreateDoorFuncArgs)funcArgsObj ) )
+					if ( !CreateDoor( Room, (CreateDoorFuncArgs)funcArgsObj ) )
 					{
 						Log.Error( $"Failed to create door for {Room.Name}" );
 						return false;
@@ -342,7 +341,7 @@ internal partial class BlitzParser
 
 			case "CreateItem":
 				{
-					if ( !ParseCreateItem( Room, (CreateItemFuncArgs)funcArgsObj ) )
+					if ( !CreateItem( Room, (CreateItemFuncArgs)funcArgsObj ) )
 					{
 						Log.Error( $"Failed to create item for {Room.Name}" );
 						return false;
@@ -353,7 +352,7 @@ internal partial class BlitzParser
 
 			case "CreateSecurityCam":
 				{
-					if ( !ParseCreateSecurityCam( Room, (CreateSecurityCamFuncArgs)funcArgsObj ) )
+					if ( !CreateSecurityCam( Room, (CreateSecurityCamFuncArgs)funcArgsObj ) )
 					{
 						Log.Error( $"Failed to create securitycam for {Room.Name}" );
 						return false;
@@ -364,7 +363,7 @@ internal partial class BlitzParser
 
 			case "CreateButton":
 				{
-					if ( !ParseCreateButton( Room, (CreateButtonFuncArgs)funcArgsObj ) )
+					if ( !CreateButton( Room, (CreateButtonFuncArgs)funcArgsObj ) )
 					{
 						Log.Error( $"Failed to create button for {Room.Name}" );
 						return false;
@@ -375,7 +374,7 @@ internal partial class BlitzParser
 
 			case "CreateWaypoint":
 				{
-					if ( !ParseCreateWaypoint( Room, (CreateWaypointFuncArgs)funcArgsObj ) )
+					if ( !CreateWaypoint( Room, (CreateWaypointFuncArgs)funcArgsObj ) )
 					{
 						Log.Error( $"Failed to create button for {Room.Name}" );
 						return false;
@@ -398,7 +397,7 @@ internal partial class BlitzParser
 			// Entity methods
 			case "PositionEntity":
 				{
-					if ( !ParsePositionEntity( Room, (PositionEntityFuncArgs)funcArgsObj ) )
+					if ( !PositionEntity( Room, (PositionEntityFuncArgs)funcArgsObj ) )
 					{
 						Log.Error( $"failed to parse position entity call for {Room.Name}" );
 					}
@@ -408,7 +407,7 @@ internal partial class BlitzParser
 
 			case "CopyEntity":
 				{
-					if ( !ParseCopyEntity( Room, (CopyEntityFuncArgs)funcArgsObj ) )
+					if ( !CopyEntity( Room, (CopyEntityFuncArgs)funcArgsObj ) )
 					{
 						if ( Opts.Verbose )
 						{

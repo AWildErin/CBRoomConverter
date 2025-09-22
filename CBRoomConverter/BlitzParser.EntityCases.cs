@@ -127,7 +127,7 @@ internal partial class BlitzParser
 		return true;
 	}
 
-	private static bool ParseCreateDoor( Room Room, CreateDoorFuncArgs FuncArgs )
+	private static bool CreateDoor( Room Room, CreateDoorFuncArgs FuncArgs )
 	{
 		var ent = CreateEntity( Room, FuncArgs.VariableName, ESCPCBRoomCreatorEntityType.Door );
 
@@ -146,7 +146,7 @@ internal partial class BlitzParser
 		return true;
 	}
 
-	private static bool ParseCreateItem( Room Room, CreateItemFuncArgs FuncArgs )
+	private static bool CreateItem( Room Room, CreateItemFuncArgs FuncArgs )
 	{
 		var ent = CreateEntity( Room, FuncArgs.VariableName, ESCPCBRoomCreatorEntityType.Item );
 
@@ -156,7 +156,7 @@ internal partial class BlitzParser
 		return true;
 	}
 
-	private static bool ParseCreateSecurityCam( Room Room, CreateSecurityCamFuncArgs FuncArgs )
+	private static bool CreateSecurityCam( Room Room, CreateSecurityCamFuncArgs FuncArgs )
 	{
 		var ent = CreateEntity( Room, FuncArgs.VariableName, ESCPCBRoomCreatorEntityType.SecurityCam );
 
@@ -166,7 +166,7 @@ internal partial class BlitzParser
 		return true;
 	}
 
-	private static bool ParseCreateButton( Room Room, CreateButtonFuncArgs FuncArgs )
+	private static bool CreateButton( Room Room, CreateButtonFuncArgs FuncArgs )
 	{
 		var ent = CreateEntity( Room, FuncArgs.VariableName, ESCPCBRoomCreatorEntityType.Button );
 
@@ -176,7 +176,7 @@ internal partial class BlitzParser
 		return true;
 	}
 
-	private static bool ParseCreateWaypoint( Room Room, CreateWaypointFuncArgs FuncArgs )
+	private static bool CreateWaypoint( Room Room, CreateWaypointFuncArgs FuncArgs )
 	{
 		var ent = CreateEntity( Room, FuncArgs.VariableName, ESCPCBRoomCreatorEntityType.Waypoint );
 

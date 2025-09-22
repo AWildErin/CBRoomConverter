@@ -8,7 +8,7 @@ namespace CBRoomConverter;
 
 internal partial class BlitzParser
 {
-	private static bool ParsePositionEntity( Room Room, PositionEntityFuncArgs FuncArgs )
+	private static bool PositionEntity( Room Room, PositionEntityFuncArgs FuncArgs )
 	{
 		// Generally, when we position objects for this room they will be in a format like:
 		// - r\RoomDoors[1]\buttons[0]
@@ -61,7 +61,7 @@ internal partial class BlitzParser
 		return true;
 	}
 
-	private static bool ParseCopyEntity( Room Room, CopyEntityFuncArgs FuncArgs )
+	private static bool CopyEntity( Room Room, CopyEntityFuncArgs FuncArgs )
 	{
 		//(var newEnt, var funcArgs) = CreateEntityFromFunction( Room, RegexMatch, ESCPCBRoomCreatorEntityType.None );
 		var newEnt = CreateEntity( Room, FuncArgs.VariableName, ESCPCBRoomCreatorEntityType.None );
