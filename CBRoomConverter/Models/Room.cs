@@ -37,4 +37,14 @@ internal class Room
 	// Maps a name to a specific entity, will get updated each time an entity with that name is created
 	[JsonIgnore]
 	public Dictionary<string, Entity> InternalNameToEntity { get; set; } = new();
+
+	public Entity? FindEntity(string Name)
+	{
+		if ( !InternalNameToEntity.ContainsKey( Name ) )
+		{
+			return null;
+		}
+
+		return InternalNameToEntity[Name];
+	}
 }
