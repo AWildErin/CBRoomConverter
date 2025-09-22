@@ -353,6 +353,17 @@ internal partial class BlitzParser
 					break;
 				}
 
+			// Entity methods
+			case "PositionEntity":
+				{
+					if ( !ParsePositionEntity( Room, match, Line ) )
+					{
+						Log.Error( $"failed to parse position entity call for {Room.Name}" );
+					}
+
+					break;
+				}
+
 			default:
 				{
 					if ( Opts.Verbose )

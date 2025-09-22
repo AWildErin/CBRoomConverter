@@ -6,6 +6,24 @@ namespace CBRoomConverter;
 
 internal partial class BlitzParser
 {
+	/// <summary>
+	/// Only works for functions gathered from funcCallRegex
+	/// </summary>
+	private static List<string> ExtractArgsFromMethodCall( Match Match )
+	{
+		List<string> funcArgs = Match.Groups[2].Value
+						.Split( "," )
+						.Select( x =>
+						{
+							x = x.Trim();
+							x = x.Trim( '"' );
+							return x;
+						} )
+						.ToList();
+
+		return funcArgs;
+	}
+
 	private static (Entity, List<string>) CreateEntityFromFunction( Room Room, Match RegexMatch, ESCPCBRoomCreatorEntityType Type )
 	{
 		string varName = ExtractVarName( RegexMatch.Groups[1].Value ).Trim();
