@@ -189,6 +189,8 @@ internal partial class BlitzParser
 
 	private static bool ParseScriptLines( Room Room, List<string> ScriptText, Options Opts )
 	{
+		bool insideLoop = false;
+		int nestedCounter = 0;
 		foreach ( var line in ScriptText )
 		{
 			if ( line.IndexOf( ':' ) != -1 )
@@ -210,6 +212,32 @@ internal partial class BlitzParser
 					}
 				}
 
+				continue;
+			}
+
+			// Skip loops for now
+			if ( line.StartsWith( "For" ) )
+			{
+				insideLoop = true;
+
+				nestedCounter++;
+				continue;
+			}
+			else if ( line.StartsWith( "Next" ) )
+			{
+				nestedCounter--;
+
+				if ( nestedCounter <= 0 )
+				{
+					insideLoop = false;
+				}
+
+				continue;
+			}
+
+			if ( insideLoop )
+			{
+				//Log.Info( $"Skipping {line} because of loop. Current nested count is {nestedCounter}" );
 				continue;
 			}
 
