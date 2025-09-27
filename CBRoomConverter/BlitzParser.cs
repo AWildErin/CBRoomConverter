@@ -64,7 +64,6 @@ internal partial class BlitzParser
 	private static readonly Regex funcWithReturnRegex = new( @"(.*?)\s*=\s*(.*?)\((.*)\)" );
 	private static readonly Regex funcCallRegex = new( @"\s*(.*?)\((.*)\)" );
 	private static readonly Regex objectAssignmentRegex = new( @".*?[\\](.*?) =" );
-	private static readonly Regex posNumberRegex = new( @"([+\-*/]\s*|\b)(\d+(?:\.\d+)?)" );
 
 	public static void ParseBlitz( RoomList List, string BlitzPath, Options Opts )
 	{

@@ -1,5 +1,6 @@
 ﻿using CBRoomConverter.Enums;
 using CBRoomConverter.FunctionArguments;
+using CBRoomConverter.Helpers;
 using CBRoomConverter.Models;
 using System.Text.RegularExpressions;
 
@@ -65,58 +66,33 @@ internal partial class BlitzParser
 		return ent;
 	}
 
-	// Extracts the raw numerical value from the given input
-	private static string ExtractPosition( string Input )
-	{
-		string output = Input;
-
-		if ( posNumberRegex.IsMatch( output ) )
-		{
-			// NOTE: This function handles whether or not we need to negate the value
-			// In SCP:CB they will do stuff like r/x - val, which for actual usage, we need to then take the operator
-			var match = posNumberRegex.Match( output );
-
-			var op = match.Groups[1].Value.Trim();
-			if ( op.Equals( "-" ) )
-			{
-				output = $"{op}{match.Groups[2].Value}";
-			}
-			else
-			{
-				output = match.Groups[2].Value;
-			}
-		}
-
-		return output;
-	}
-
 	private static void AddOrUpdateEntityPosition( Entity Entity, string X, string Y, string Z )
 	{
 		if ( Entity.Properties.ContainsKey( "x" ) )
 		{
-			Entity.Properties["x"] = ExtractPosition( X );
+			Entity.Properties["x"] = EntityHelpers.ExtractPosition( X );
 		}
 		else
 		{
-			Entity.Properties.Add( "x", ExtractPosition( X ) );
+			Entity.Properties.Add( "x", EntityHelpers.ExtractPosition( X ) );
 		}
 
 		if ( Entity.Properties.ContainsKey( "y" ) )
 		{
-			Entity.Properties["y"] = ExtractPosition( Y );
+			Entity.Properties["y"] = EntityHelpers.ExtractPosition( Y );
 		}
 		else
 		{
-			Entity.Properties.Add( "y", ExtractPosition( Y ) );
+			Entity.Properties.Add( "y", EntityHelpers.ExtractPosition( Y ) );
 		}
 
 		if ( Entity.Properties.ContainsKey( "z" ) )
 		{
-			Entity.Properties["z"] = ExtractPosition( Z );
+			Entity.Properties["z"] = EntityHelpers.ExtractPosition( Z );
 		}
 		else
 		{
-			Entity.Properties.Add( "z", ExtractPosition( Z ) );
+			Entity.Properties.Add( "z", EntityHelpers.ExtractPosition( Z ) );
 		}
 	}
 
