@@ -12,7 +12,12 @@ internal abstract class BaseFuncArgs
 	{
 	}
 
-	public void AddPropertiesToEntity( Entity Ent )
+	/// <summary>
+	/// Adds all the func arguments to the entity
+	/// </summary>
+	/// <param name="Ent">Entity which the props will be added to.</param>
+	/// <param name="PropsToIgnore">List of serialized names to ignore.</param>
+	public void AddPropertiesToEntity( Entity Ent, List<string>? PropsToIgnore = null )
 	{
 		var type = GetType();
 
@@ -33,6 +38,11 @@ internal abstract class BaseFuncArgs
 			var attrib = prop.GetCustomAttribute<BlitzFuncArgIndexAttribute>()!;
 
 			var serializedName = attrib.SerializedName;
+
+			if ( PropsToIgnore is not null && PropsToIgnore.Contains( serializedName ) )
+			{
+				continue;
+			}
 
 			var value = prop.GetValue( this ) as string;
 			if ( value is null )
