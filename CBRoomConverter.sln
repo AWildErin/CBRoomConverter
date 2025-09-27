@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CBRoomConverter", "CBRoomCo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AWildErin.Utility", "ThirdParty\AWildErin.Utility\AWildErin.Utility.csproj", "{ECF45C8B-4797-C42E-2940-4C29E62949A3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CBRoomConverter.Tests", "CBRoomConverter.Tests\CBRoomConverter.Tests.csproj", "{F8AD8F02-5565-40C5-9AE9-8662E189EA59}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{ECF45C8B-4797-C42E-2940-4C29E62949A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECF45C8B-4797-C42E-2940-4C29E62949A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECF45C8B-4797-C42E-2940-4C29E62949A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8AD8F02-5565-40C5-9AE9-8662E189EA59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8AD8F02-5565-40C5-9AE9-8662E189EA59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8AD8F02-5565-40C5-9AE9-8662E189EA59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8AD8F02-5565-40C5-9AE9-8662E189EA59}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
