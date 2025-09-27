@@ -56,7 +56,7 @@ internal partial class BlitzParser
 			return false;
 		}
 
-		AddOrUpdateEntityPosition( foundEntity, FuncArgs.x, FuncArgs.y, FuncArgs.z );
+		foundEntity.SetPosition( FuncArgs.x, FuncArgs.y, FuncArgs.z );
 
 		return true;
 	}

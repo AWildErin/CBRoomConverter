@@ -66,36 +66,6 @@ internal partial class BlitzParser
 		return ent;
 	}
 
-	private static void AddOrUpdateEntityPosition( Entity Entity, string X, string Y, string Z )
-	{
-		if ( Entity.Properties.ContainsKey( "x" ) )
-		{
-			Entity.Properties["x"] = EntityHelpers.ExtractPosition( X );
-		}
-		else
-		{
-			Entity.Properties.Add( "x", EntityHelpers.ExtractPosition( X ) );
-		}
-
-		if ( Entity.Properties.ContainsKey( "y" ) )
-		{
-			Entity.Properties["y"] = EntityHelpers.ExtractPosition( Y );
-		}
-		else
-		{
-			Entity.Properties.Add( "y", EntityHelpers.ExtractPosition( Y ) );
-		}
-
-		if ( Entity.Properties.ContainsKey( "z" ) )
-		{
-			Entity.Properties["z"] = EntityHelpers.ExtractPosition( Z );
-		}
-		else
-		{
-			Entity.Properties.Add( "z", EntityHelpers.ExtractPosition( Z ) );
-		}
-	}
-
 	private static bool CreateBasicEntity( Room Room, BaseFuncArgs FuncArgs, ESCPCBRoomCreatorEntityType EntityType )
 	{
 		var ent = CreateEntity( Room, FuncArgs.VariableName, EntityType );
@@ -117,7 +87,7 @@ internal partial class BlitzParser
 		ent.ChildEntities.Add( button );
 
 		FuncArgs.AddPropertiesToEntity( ent );
-		AddOrUpdateEntityPosition( ent, FuncArgs.x, FuncArgs.y, FuncArgs.z );
+		ent.SetPosition( FuncArgs.x, FuncArgs.y, FuncArgs.z );
 
 		return true;
 	}
@@ -127,7 +97,7 @@ internal partial class BlitzParser
 		var ent = CreateEntity( Room, FuncArgs.VariableName, ESCPCBRoomCreatorEntityType.Item );
 
 		FuncArgs.AddPropertiesToEntity( ent );
-		AddOrUpdateEntityPosition( ent, FuncArgs.x, FuncArgs.y, FuncArgs.z );
+		ent.SetPosition( FuncArgs.x, FuncArgs.y, FuncArgs.z );
 
 		return true;
 	}
@@ -137,7 +107,7 @@ internal partial class BlitzParser
 		var ent = CreateEntity( Room, FuncArgs.VariableName, ESCPCBRoomCreatorEntityType.SecurityCam );
 
 		FuncArgs.AddPropertiesToEntity( ent );
-		AddOrUpdateEntityPosition( ent, FuncArgs.x, FuncArgs.y, FuncArgs.z );
+		ent.SetPosition( FuncArgs.x, FuncArgs.y, FuncArgs.z );
 
 		return true;
 	}
@@ -147,7 +117,7 @@ internal partial class BlitzParser
 		var ent = CreateEntity( Room, FuncArgs.VariableName, ESCPCBRoomCreatorEntityType.Button );
 
 		FuncArgs.AddPropertiesToEntity( ent );
-		AddOrUpdateEntityPosition( ent, FuncArgs.x, FuncArgs.y, FuncArgs.z );
+		ent.SetPosition( FuncArgs.x, FuncArgs.y, FuncArgs.z );
 
 		return true;
 	}
@@ -157,7 +127,7 @@ internal partial class BlitzParser
 		var ent = CreateEntity( Room, FuncArgs.VariableName, ESCPCBRoomCreatorEntityType.Waypoint );
 
 		FuncArgs.AddPropertiesToEntity( ent );
-		AddOrUpdateEntityPosition( ent, FuncArgs.x, FuncArgs.y, FuncArgs.z );
+		ent.SetPosition( FuncArgs.x, FuncArgs.y, FuncArgs.z );
 
 		return true;
 	}
