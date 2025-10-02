@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace CBRoomConverter.Models;
 
-internal class Entity
+internal partial class Entity
 {
 	public ESCPCBRoomCreatorEntityType Type { get; set; } = ESCPCBRoomCreatorEntityType.None;
 	public string? Name { get; set; }
@@ -58,10 +58,8 @@ internal class Entity
 		Position = new( X, Y, Z );
 	}
 
-	public void SetPosition( string X, string Y, string Z )
+	public void MoveEntity( float X, float Y, float Z )
 	{
-		SetOrUpdatePositionComponent( "x", X );
-		SetOrUpdatePositionComponent( "y", Y );
-		SetOrUpdatePositionComponent( "z", Z );
+		Position += Vector3.Transform( new Vector3( X, Y, Z ), Rotation );
 	}
 }
