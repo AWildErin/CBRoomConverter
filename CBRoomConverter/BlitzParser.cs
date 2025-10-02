@@ -65,7 +65,7 @@ internal partial class BlitzParser
 	private static readonly Regex funcCallRegex = new( @"\s*(.*?)\((.*)\)" );
 	private static readonly Regex objectAssignmentRegex = new( @".*?[\\](.*?) =" );
 
-	public static void ParseBlitz( RoomList List, string BlitzPath, Options Opts )
+	public static void ParseBlitz( RoomList List, string BlitzPath, Options? Opts = null )
 	{
 		int functionStartIndex = -1;
 		int functionEndIndex = -1;
@@ -77,7 +77,7 @@ internal partial class BlitzParser
 		Dictionary<string, List<string>> roomCaseText = new();
 		Dictionary<string, string> keysWithSameCase = new();
 
-		if ( Opts.Verbose )
+		if ( Opts is not null && Opts.Verbose )
 		{
 			Log.Debug( $"Parsing blitz file: {BlitzPath}" );
 		}
@@ -161,7 +161,7 @@ internal partial class BlitzParser
 			}
 		}
 
-		if ( Opts.Verbose )
+		if ( Opts is not null && Opts.Verbose )
 		{
 			Log.Debug( $"Function Start Index: {functionStartIndex}" );
 			Log.Debug( $"Function End Index: {functionEndIndex}" );
@@ -171,14 +171,14 @@ internal partial class BlitzParser
 
 		foreach ( var pair in roomCaseText )
 		{
-			if ( Opts.Verbose )
+			if ( Opts is not null && Opts.Verbose )
 			{
 				Log.Debug( $"Parsing {pair.Key} " );
 			}
 
 			if ( !List.Rooms.ContainsKey( pair.Key ) )
 			{
-				if ( Opts.Verbose )
+				if ( Opts is not null && Opts.Verbose )
 				{
 					Log.Warn( $" Room {pair.Key} was inside the function, but not in the rooms list!" );
 				}
@@ -192,7 +192,7 @@ internal partial class BlitzParser
 		}
 	}
 
-	private static bool ParseScriptLines( Room Room, List<string> ScriptText, Options Opts )
+	private static bool ParseScriptLines( Room Room, List<string> ScriptText, Options? Opts = null )
 	{
 		bool insideLoop = false;
 		int nestedCounter = 0;
@@ -255,7 +255,7 @@ internal partial class BlitzParser
 		return true;
 	}
 
-	private static bool ParseScriptText( Room Room, string Line, Options Opts )
+	private static bool ParseScriptText( Room Room, string Line, Options? Opts = null )
 	{
 		// Check our regexes
 		Match? match = null;
@@ -294,7 +294,7 @@ internal partial class BlitzParser
 
 		if ( skippedFunctions.Contains( funcName ) )
 		{
-			if ( Opts.Verbose )
+			if ( Opts is not null && Opts.Verbose )
 			{
 				Log.Debug( $"Skipping {funcName} as it was a skipped function" );
 			}
@@ -305,7 +305,7 @@ internal partial class BlitzParser
 		var funcArgsObj = ReflectionHelper.CreateFuncArgs( funcName, ExtractArgsFromString( funcArguments ) );
 		if ( funcArgsObj is null )
 		{
-			if ( Opts.Verbose )
+			if ( Opts is not null && Opts.Verbose )
 			{
 				Log.Warn( $"Skipping {funcName} as it did not have a corresponding func args class" );
 			}
@@ -408,7 +408,7 @@ internal partial class BlitzParser
 				{
 					if ( !CopyEntity( Room, (CopyEntityFuncArgs)funcArgsObj ) )
 					{
-						if ( Opts.Verbose )
+						if ( Opts is not null && Opts.Verbose )
 						{
 							Log.Warn( $"Failed to copy {match.Groups[1].Value}. Please check the source. If this entity was anything other than a sprite or decal, please create an issue!" );
 						}
@@ -419,7 +419,7 @@ internal partial class BlitzParser
 
 			default:
 				{
-					if ( Opts.Verbose )
+					if ( Opts is not null && Opts.Verbose )
 					{
 						Log.Warn( $"Skipping {funcName} as it did not have a case" );
 					}

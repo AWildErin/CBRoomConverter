@@ -35,12 +35,12 @@ internal class RoomParser
 		{ "4", ESCPRoomType.FourWay }
 	};
 
-	public static void ParseIni( RoomList List, string IniPath, Options Opts )
+	public static void ParseIni( RoomList List, string IniPath, Options? Opts = null )
 	{
 		var parser = new FileIniDataParser();
 		IniData data = parser.ReadFile( IniPath );
 
-		if ( Opts.Verbose )
+		if ( Opts is not null && Opts.Verbose )
 		{
 			Log.Debug( "Adding room ambience" );
 		}
@@ -63,7 +63,7 @@ internal class RoomParser
 				continue;
 			}
 
-			if ( Opts.Verbose )
+			if ( Opts is not null && Opts.Verbose )
 			{
 				Log.Debug( $"Adding {section.SectionName}" );
 			}
