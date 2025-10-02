@@ -195,7 +195,11 @@ internal partial class BlitzParser
 	private static bool ParseScriptLines( Room Room, List<string> ScriptText, Options? Opts = null )
 	{
 		bool insideLoop = false;
-		int nestedCounter = 0;
+		int nestedLoopCounter = 0;
+
+		bool insideConditional = false;
+		int nestedConditionalCounter = 0;
+
 		foreach ( var line in ScriptText )
 		{
 			if ( line.IndexOf( ':' ) != -1 )
@@ -225,14 +229,14 @@ internal partial class BlitzParser
 			{
 				insideLoop = true;
 
-				nestedCounter++;
+				nestedLoopCounter++;
 				continue;
 			}
 			else if ( line.StartsWith( "Next" ) )
 			{
-				nestedCounter--;
+				nestedLoopCounter--;
 
-				if ( nestedCounter <= 0 )
+				if ( nestedLoopCounter <= 0 )
 				{
 					insideLoop = false;
 				}
@@ -240,9 +244,33 @@ internal partial class BlitzParser
 				continue;
 			}
 
-			if ( insideLoop )
+			// Skip if blocks for now, it would be nice to do basic parsing of these
+			if ( line.StartsWith( "If" ) )
 			{
-				//Log.Info( $"Skipping {line} because of loop. Current nested count is {nestedCounter}" );
+				insideConditional = true;
+
+				nestedConditionalCounter++;
+				continue;
+			}
+			else if ( line.StartsWith( "EndIf" ) )
+			{
+				nestedConditionalCounter--;
+
+				if ( nestedConditionalCounter <= 0 )
+				{
+					insideConditional = false;
+				}
+
+				continue;
+			}
+
+			if ( insideLoop || insideConditional )
+			{
+				if ( Opts is not null && Opts.Verbose )
+				{
+					Log.Info( $"Skipping {line} because of loop or conditional. Current nested count is {nestedConditionalCounter}:{nestedLoopCounter}" );
+				}
+
 				continue;
 			}
 
