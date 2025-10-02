@@ -1,4 +1,5 @@
 ﻿using AWildErin.Utility;
+using CBRoomConverter.Converters;
 using CBRoomConverter.Models;
 using CommandLine;
 using CommandLine.Text;
@@ -65,7 +66,8 @@ internal class Program
 			DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
 			Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
 		};
-
+		jsonOpts.Converters.Add( new Vector3Converter() );
+		jsonOpts.Converters.Add( new QuaternionConverter() );
 		jsonOpts.Converters.Add( new JsonStringEnumConverter() );
 
 		var outText = JsonSerializer.Serialize( list, jsonOpts );
