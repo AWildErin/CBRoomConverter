@@ -1,5 +1,6 @@
 ﻿using CBRoomConverter.Enums;
 using CBRoomConverter.Helpers;
+using OpenTK.Mathematics;
 using System.Text.Json.Serialization;
 
 namespace CBRoomConverter.Models;
@@ -8,8 +9,13 @@ internal class Entity
 {
 	public ESCPCBRoomCreatorEntityType Type { get; set; } = ESCPCBRoomCreatorEntityType.None;
 	public string? Name { get; set; }
+
+	public Vector3 Position { get; set; } = new();
+	public Quaternion Rotation { get; set; } = new();
+
 	public Dictionary<string, string> Properties { get; set; } = new();
 	public List<Entity> ChildEntities { get; set; } = new();
+
 
 	[JsonIgnore]
 	public Room? OwnerRoom { get; set; }
