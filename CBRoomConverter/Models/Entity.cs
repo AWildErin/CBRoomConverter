@@ -10,6 +10,7 @@ internal partial class Entity
 	public ESCPCBRoomCreatorEntityType Type { get; set; } = ESCPCBRoomCreatorEntityType.None;
 	public string? Name { get; set; }
 
+	public Vector3 Scale { get; set; } = new( 1f );
 	public Vector3 Position { get; set; } = new();
 	public Quaternion Rotation { get; set; } = new();
 
@@ -47,17 +48,27 @@ internal partial class Entity
 		return 0f;
 	}
 
-
+	// bb func: RotateEntity
 	public void SetAngles( float Pitch, float Yaw, float Roll )
 	{
 		Rotation = new( Pitch * MathHelper.DegToRad, Yaw * MathHelper.DegToRad, Roll * MathHelper.DegToRad );
 	}
 
+	// bb func: PositionEntity
 	public void SetPosition( float X, float Y, float Z )
 	{
 		Position = new( X, Y, Z );
 	}
 
+	// bb func: ScaleEntity
+	public void SetScale( float X, float Y, float Z )
+	{
+		Scale = new( X, Y, Z );
+	}
+
+	// Positional Methods
+
+	// Moves relative to it's position and orientation
 	public void MoveEntity( float X, float Y, float Z )
 	{
 		Position += Vector3.Transform( new Vector3( X, Y, Z ), Rotation );
