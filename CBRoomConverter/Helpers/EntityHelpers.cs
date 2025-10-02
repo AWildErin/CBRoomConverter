@@ -36,4 +36,10 @@ internal class EntityHelpers
 		return output;
 	}
 
+	public static string ExtractRotation( string Input )
+	{
+		// @todo Extract this into a base, then have ExtractPosition and ExtractRotation use it,
+		// Then both can handle their respective entity funcs
+		return EntityHelpers.ExtractPosition( Input );
+	}
 }
