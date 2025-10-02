@@ -47,6 +47,17 @@ internal class Entity
 		return 0f;
 	}
 
+
+	public void SetAngles( float Pitch, float Yaw, float Roll )
+	{
+		Rotation = new( Pitch * MathHelper.DegToRad, Yaw * MathHelper.DegToRad, Roll * MathHelper.DegToRad );
+	}
+
+	public void SetPosition( float X, float Y, float Z )
+	{
+		Position = new( X, Y, Z );
+	}
+
 	public void SetPosition( string X, string Y, string Z )
 	{
 		SetOrUpdatePositionComponent( "x", X );
