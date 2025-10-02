@@ -26,6 +26,12 @@ internal class EntityHelpers
 				output = match.Groups[2].Value;
 			}
 		}
+		else
+		{
+			return "0";
+		}
+
+		// @TODO Handle EntityX, EntityY, EntityZ
 
 		return output;
 	}
