@@ -73,4 +73,10 @@ internal partial class Entity
 	{
 		Position += Vector3.Transform( new Vector3( X, Y, Z ), Rotation );
 	}
+
+	// Moves relative to it's position and no it's orientation
+	public void TranslateEntity( float X, float Y, float Z )
+	{
+		Position += new Vector3( X, Y, Z );
+	}
 }
