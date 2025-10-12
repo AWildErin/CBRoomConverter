@@ -422,16 +422,6 @@ internal partial class BlitzParser
 				}
 
 			// Entity methods
-			case "PositionEntity":
-				{
-					if ( !PositionEntity( Room, (PositionEntityFuncArgs)funcArgsObj ) )
-					{
-						Log.Error( $"failed to parse position entity call for {Room.Name}" );
-					}
-
-					break;
-				}
-
 			case "CopyEntity":
 				{
 					if ( !CopyEntity( Room, (CopyEntityFuncArgs)funcArgsObj ) )
@@ -440,6 +430,66 @@ internal partial class BlitzParser
 						{
 							Log.Warn( $"Failed to copy {match.Groups[1].Value}. Please check the source. If this entity was anything other than a sprite or decal, please create an issue!" );
 						}
+					}
+
+					break;
+				}
+
+			case "ScaleEntity":
+				{
+					if ( !ScaleEntity( Room, (ScaleEntityFuncArgs)funcArgsObj ) )
+					{
+						Log.Error( $"failed to parse ScaleEntity call for {Room.Name}" );
+					}
+
+					break;
+				}
+
+			case "PositionEntity":
+				{
+					if ( !PositionEntity( Room, (PositionEntityFuncArgs)funcArgsObj ) )
+					{
+						Log.Error( $"failed to parse PositionEntity call for {Room.Name}" );
+					}
+
+					break;
+				}
+
+			case "MoveEntity":
+				{
+					if ( !MoveEntity( Room, (MoveEntityFuncArgs)funcArgsObj ) )
+					{
+						Log.Error( $"failed to parse MoveEntity call for {Room.Name}" );
+					}
+
+					break;
+				}
+
+			case "TranslateEntity":
+				{
+					if ( !TranslateEntity( Room, (TranslateEntityFuncArgs)funcArgsObj ) )
+					{
+						Log.Error( $"failed to parse TranslateEntity call for {Room.Name}" );
+					}
+
+					break;
+				}
+
+			case "RotateEntity":
+				{
+					if ( !RotateEntity( Room, (RotateEntityFuncArgs)funcArgsObj ) )
+					{
+						Log.Error( $"failed to parse RotateEntity call for {Room.Name}" );
+					}
+
+					break;
+				}
+
+			case "TurnEntity":
+				{
+					if ( !TurnEntity( Room, (TurnEntityFuncArgs)funcArgsObj ) )
+					{
+						Log.Error( $"failed to parse TurnEntity call for {Room.Name}" );
 					}
 
 					break;
