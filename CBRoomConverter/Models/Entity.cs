@@ -11,8 +11,8 @@ internal partial class Entity
 	public string? Name { get; set; }
 
 	public Vector3 Scale { get; set; } = new( 1f );
-	public Vector3 Position { get; set; } = new();
-	public Quaternion Rotation { get; set; } = new();
+	public Vector3 Position { get; set; } = new( 0f, 0f, 0f );
+	public Quaternion Rotation { get; set; } = new( 0f, 0f, 0f, 1f );
 
 	public Dictionary<string, string> Properties { get; set; } = new();
 	public List<Entity> ChildEntities { get; set; } = new();
