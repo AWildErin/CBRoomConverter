@@ -9,12 +9,17 @@ namespace CBRoomConverter.Models;
 /// </summary>
 internal partial class Entity
 {
+	public void SetAngles( string Pitch, string Yaw, string Roll )
+	{
+		float x = float.Parse( EntityHelpers.ExtractRotation( Pitch ) );
+		float y = float.Parse( EntityHelpers.ExtractRotation( Yaw ) );
+		float z = float.Parse( EntityHelpers.ExtractRotation( Roll ) );
+
+		SetAngles( x, y, z );
+	}
+
 	public void SetPosition( string X, string Y, string Z )
 	{
-		SetOrUpdatePositionComponent( "x", X );
-		SetOrUpdatePositionComponent( "y", Y );
-		SetOrUpdatePositionComponent( "z", Z );
-
 		float x = float.Parse( EntityHelpers.ExtractPosition( X ) );
 		float y = float.Parse( EntityHelpers.ExtractPosition( Y ) );
 		float z = float.Parse( EntityHelpers.ExtractPosition( Z ) );
@@ -22,9 +27,15 @@ internal partial class Entity
 		SetPosition( x, y, z );
 	}
 
-	/// <summary>
-	/// Moves the entity relative to it's current position
-	/// </summary>
+	public void SetScale( string X, string Y, string Z )
+	{
+		float x = float.Parse( X );
+		float y = float.Parse( Y );
+		float z = float.Parse( Z );
+
+		SetScale( x, y, z );
+	}
+
 	public void MoveEntity( string X, string Y, string Z )
 	{
 		float x = float.Parse( EntityHelpers.ExtractPosition( X ) );
@@ -32,5 +43,23 @@ internal partial class Entity
 		float z = float.Parse( EntityHelpers.ExtractPosition( Z ) );
 
 		MoveEntity( x, y, z );
+	}
+
+	public void TranslateEntity( string X, string Y, string Z )
+	{
+		float x = float.Parse( EntityHelpers.ExtractPosition( X ) );
+		float y = float.Parse( EntityHelpers.ExtractPosition( Y ) );
+		float z = float.Parse( EntityHelpers.ExtractPosition( Z ) );
+
+		TranslateEntity( x, y, z );
+	}
+
+	public void TurnEntity( string Pitch, string Yaw, string Roll )
+	{
+		float x = float.Parse( EntityHelpers.ExtractRotation( Pitch ) );
+		float y = float.Parse( EntityHelpers.ExtractRotation( Yaw ) );
+		float z = float.Parse( EntityHelpers.ExtractRotation( Roll ) );
+
+		TurnEntity( x, y, z );
 	}
 }
