@@ -79,4 +79,14 @@ internal partial class Entity
 	{
 		Position += new Vector3( X, Y, Z );
 	}
+
+	// Rotational Methods
+
+	// Turns an entity relative to it's current orientation
+	public void TurnEntity( float Pitch, float Yaw, float Roll )
+	{
+		Quaternion delta = new( Pitch * MathHelper.DegToRad, Yaw * MathHelper.DegToRad, Roll * MathHelper.DegToRad );
+		Rotation *= delta;
+	}
+
 }
