@@ -86,7 +86,7 @@ internal partial class BlitzParser
 		button.Name = "buttons[1]";
 		ent.ChildEntities.Add( button );
 
-		FuncArgs.AddPropertiesToEntity( ent );
+		FuncArgs.AddPropertiesToEntity( ent, new() { "angle" } );
 		ent.SetPosition( FuncArgs.x, FuncArgs.y, FuncArgs.z );
 
 		return true;

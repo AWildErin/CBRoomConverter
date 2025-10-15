@@ -329,8 +329,44 @@ internal partial class BlitzParser
 			return true;
 		}
 
+		// Expand any accessors
+		var funcArgs = ExtractArgsFromString( funcArguments );
+		for ( var i = 0; i < funcArgs.Count; i++)
+		{
+			var arg = funcArgs[i];
+
+			// Do we have a function?
+			if ( !funcCallRegex.IsMatch( arg ) )
+			{
+				continue;
+			}
+
+			// @todo We're a match now, so extract it out and add back the result based on the func name
+
+			var accessorMatch = funcCallRegex.Match( arg );
+			var accessorName = accessorMatch.Groups[1].Value;
+			var accessorArgs = ExtractArgsFromString( accessorMatch.Groups[2].Value );
+
+			var accessorArgsObj = ReflectionHelper.CreateFuncArgs( accessorName, accessorArgs );
+			if ( accessorArgsObj is null )
+			{
+				if ( Opts is not null && Opts.Verbose )
+				{
+					Log.Warn( $"Skipping {accessorName} as it did not have a corresponding func args class. Please implement the accessor!" );
+				}
+
+				// Remove the accessor and just carry on
+
+				continue;
+			}
+
+			// Expand the accessor, and replace the text inside it
+			string replacedText = ExpandAccessor( Room, accessorName, accessorArgsObj );
+			funcArgs[i] = arg.Remove( accessorMatch.Index, accessorMatch.Length ).Insert( accessorMatch.Index, replacedText );
+		}
+
 		// Attempt to find the func args type
-		var funcArgsObj = ReflectionHelper.CreateFuncArgs( funcName, ExtractArgsFromString( funcArguments ) );
+		var funcArgsObj = ReflectionHelper.CreateFuncArgs( funcName, funcArgs );
 		if ( funcArgsObj is null )
 		{
 			if ( Opts is not null && Opts.Verbose )
