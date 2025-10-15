@@ -38,13 +38,32 @@ internal class Room
 	[JsonIgnore]
 	public Dictionary<string, Entity> InternalNameToEntity { get; set; } = new();
 
-	public Entity? FindEntity(string Name)
+	public Entity? FindEntity( string Name, bool CheckChildren = false )
 	{
-		if ( !InternalNameToEntity.ContainsKey( Name ) )
+		if ( InternalNameToEntity.ContainsKey( Name ) )
 		{
-			return null;
+			return InternalNameToEntity[Name];
 		}
 
-		return InternalNameToEntity[Name];
+		if ( CheckChildren )
+		{
+			// Use the text past the last occurance of \ as the child name
+			int lastIdx = Name.LastIndexOf( '\\' );
+			if ( lastIdx > -1 )
+			{
+				string childName = Name.Substring( lastIdx + 1 );
+				string parentName = Name.Substring( 0, lastIdx );
+
+				var parent = FindEntity( parentName );
+				if ( parent is null )
+				{
+					return null;
+				}
+
+				return parent.FindChildEntity( childName );
+			}
+		}
+
+		return null;
 	}
 }
