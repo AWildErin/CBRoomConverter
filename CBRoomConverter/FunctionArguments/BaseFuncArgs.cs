@@ -39,7 +39,7 @@ internal abstract class BaseFuncArgs
 
 			var serializedName = attrib.SerializedName;
 
-			if ( PropsToIgnore is not null && PropsToIgnore.Contains( serializedName ) )
+			if ( (PropsToIgnore is not null && PropsToIgnore.Contains( serializedName )) || GlobalConfiguration.ALWAYS_IGNORED_ARGS.Contains( serializedName ) )
 			{
 				continue;
 			}
