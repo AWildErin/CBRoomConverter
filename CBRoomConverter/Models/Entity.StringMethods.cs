@@ -11,54 +11,54 @@ internal partial class Entity
 {
 	public void SetAngles( string Pitch, string Yaw, string Roll )
 	{
-		float x = float.Parse( EntityHelpers.ExtractRotation( Pitch ) );
-		float y = float.Parse( EntityHelpers.ExtractRotation( Yaw ) );
-		float z = float.Parse( EntityHelpers.ExtractRotation( Roll ) );
+		float x = EntityHelpers.EvaluateExpression( Pitch );
+		float y = EntityHelpers.EvaluateExpression( Yaw );
+		float z = EntityHelpers.EvaluateExpression( Roll );
 
 		SetAngles( x, y, z );
 	}
 
 	public void SetPosition( string X, string Y, string Z )
 	{
-		float x = float.Parse( EntityHelpers.ExtractPosition( X ) );
-		float y = float.Parse( EntityHelpers.ExtractPosition( Y ) );
-		float z = float.Parse( EntityHelpers.ExtractPosition( Z ) );
+		float x = EntityHelpers.EvaluateExpression( X );
+		float y = EntityHelpers.EvaluateExpression( Y );
+		float z = EntityHelpers.EvaluateExpression( Z );
 
 		SetPosition( x, y, z );
 	}
 
 	public void SetScale( string X, string Y, string Z )
 	{
-		float x = float.Parse( X );
-		float y = float.Parse( Y );
-		float z = float.Parse( Z );
+		float x = EntityHelpers.EvaluateExpression( X );
+		float y = EntityHelpers.EvaluateExpression( Y );
+		float z = EntityHelpers.EvaluateExpression( Z );
 
 		SetScale( x, y, z );
 	}
 
 	public void MoveEntity( string X, string Y, string Z )
 	{
-		float x = float.Parse( EntityHelpers.ExtractPosition( X ) );
-		float y = float.Parse( EntityHelpers.ExtractPosition( Y ) );
-		float z = float.Parse( EntityHelpers.ExtractPosition( Z ) );
+		float x = EntityHelpers.EvaluateExpression( X );
+		float y = EntityHelpers.EvaluateExpression( Y );
+		float z = EntityHelpers.EvaluateExpression( Z );
 
 		MoveEntity( x, y, z );
 	}
 
 	public void TranslateEntity( string X, string Y, string Z )
 	{
-		float x = float.Parse( EntityHelpers.ExtractPosition( X ) );
-		float y = float.Parse( EntityHelpers.ExtractPosition( Y ) );
-		float z = float.Parse( EntityHelpers.ExtractPosition( Z ) );
+		float x = EntityHelpers.EvaluateExpression( X );
+		float y = EntityHelpers.EvaluateExpression( Y );
+		float z = EntityHelpers.EvaluateExpression( Z );
 
 		TranslateEntity( x, y, z );
 	}
 
 	public void TurnEntity( string Pitch, string Yaw, string Roll )
 	{
-		float x = float.Parse( EntityHelpers.ExtractRotation( Pitch ) );
-		float y = float.Parse( EntityHelpers.ExtractRotation( Yaw ) );
-		float z = float.Parse( EntityHelpers.ExtractRotation( Roll ) );
+		float x = EntityHelpers.EvaluateExpression( Pitch );
+		float y = EntityHelpers.EvaluateExpression( Yaw );
+		float z = EntityHelpers.EvaluateExpression( Roll );
 
 		TurnEntity( x, y, z );
 	}

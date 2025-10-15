@@ -26,28 +26,6 @@ internal partial class Entity
 		return ChildEntities.Where( x => x.Name == Name ).FirstOrDefault();
 	}
 
-	private void SetOrUpdatePositionComponent( string Component, string NewValue )
-	{
-		if ( Properties.ContainsKey( Component ) )
-		{
-			Properties[Component] = EntityHelpers.ExtractPosition( NewValue );
-		}
-		else
-		{
-			Properties.Add( Component, EntityHelpers.ExtractPosition( NewValue ) );
-		}
-	}
-
-	private float GetPositionComponentAsNumber( string Component )
-	{
-		if ( Properties.ContainsKey( Component ) )
-		{
-			return float.Parse( Properties[Component] );
-		}
-
-		return 0f;
-	}
-
 	// bb func: RotateEntity
 	public void SetAngles( float Pitch, float Yaw, float Roll )
 	{
