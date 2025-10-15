@@ -18,8 +18,8 @@ internal class RotationTests
 	[OneTimeSetUp]
 	public void Init()
 	{
-		RoomParser.ParseIni( TestRoomList, TestHelpers.GetTestResource( "RotationTests.ini" ) );
-		BlitzParser.ParseBlitz( TestRoomList, TestHelpers.GetTestResource( "RotationTests.bb" ) );
+		RoomParser.ParseIni( TestRoomList, TestHelpers.GetTestResource( "EntityTests/RotationTests.ini" ) );
+		BlitzParser.ParseBlitz( TestRoomList, TestHelpers.GetTestResource( "EntityTests/RotationTests.bb" ) );
 
 		//Log.Initialize();
 	}

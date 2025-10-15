@@ -18,8 +18,8 @@ internal class AccessorTests
 	[OneTimeSetUp]
 	public void Init()
 	{
-		RoomParser.ParseIni( TestRoomList, TestHelpers.GetTestResource( "AccessorTests.ini" ) );
-		BlitzParser.ParseBlitz( TestRoomList, TestHelpers.GetTestResource( "AccessorTests.bb" ) );
+		RoomParser.ParseIni( TestRoomList, TestHelpers.GetTestResource( "EntityTests/AccessorTests.ini" ) );
+		BlitzParser.ParseBlitz( TestRoomList, TestHelpers.GetTestResource( "EntityTests/AccessorTests.bb" ) );
 
 		//Log.Initialize();
 	}

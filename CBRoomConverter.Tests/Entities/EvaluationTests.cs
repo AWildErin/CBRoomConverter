@@ -18,8 +18,8 @@ internal class EvaluationTests
 	[OneTimeSetUp]
 	public void Init()
 	{
-		RoomParser.ParseIni( TestRoomList, TestHelpers.GetTestResource( "EvaluationTests.ini" ) );
-		BlitzParser.ParseBlitz( TestRoomList, TestHelpers.GetTestResource( "EvaluationTests.bb" ) );
+		RoomParser.ParseIni( TestRoomList, TestHelpers.GetTestResource( "EntityTests/EvaluationTests.ini" ) );
+		BlitzParser.ParseBlitz( TestRoomList, TestHelpers.GetTestResource( "EntityTests/EvaluationTests.bb" ) );
 
 		//Log.Initialize();
 	}

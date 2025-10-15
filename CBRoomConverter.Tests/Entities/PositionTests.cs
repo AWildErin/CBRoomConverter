@@ -18,8 +18,8 @@ internal class PositionTests
 	[OneTimeSetUp]
 	public void Init()
 	{
-		RoomParser.ParseIni( TestRoomList, TestHelpers.GetTestResource( "PositionTests.ini" ) );
-		BlitzParser.ParseBlitz( TestRoomList, TestHelpers.GetTestResource( "PositionTests.bb" ) );
+		RoomParser.ParseIni( TestRoomList, TestHelpers.GetTestResource( "EntityTests/PositionTests.ini" ) );
+		BlitzParser.ParseBlitz( TestRoomList, TestHelpers.GetTestResource( "EntityTests/PositionTests.bb" ) );
 
 		//Log.Initialize();
 	}
