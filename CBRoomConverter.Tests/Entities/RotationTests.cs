@@ -1,13 +1,6 @@
-﻿using AWildErin.Utility;
-using CBRoomConverter.Converters;
-using CBRoomConverter.Models;
+﻿using CBRoomConverter.Models;
 using NUnit.Framework.Internal;
 using OpenTK.Mathematics;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text.Encodings.Web;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace CBRoomConverter.Tests.Entities;
 

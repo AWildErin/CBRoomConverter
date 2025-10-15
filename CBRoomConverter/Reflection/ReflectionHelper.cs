@@ -1,5 +1,4 @@
 ﻿using CBRoomConverter.FunctionArguments;
-using IniParser.Model.Formatting;
 using System.Reflection;
 
 namespace CBRoomConverter.Reflection;
@@ -38,7 +37,7 @@ internal static class ReflectionHelper
 							x =>
 							{
 								var attribs = x.GetCustomAttributes<BlitzFuncArgsAttribute>();
-								var attrib = attribs.Where(x=> x.FunctionName == FunctionName).FirstOrDefault();
+								var attrib = attribs.Where( x => x.FunctionName == FunctionName ).FirstOrDefault();
 								return attrib is not null;
 							}
 						)
@@ -62,13 +61,13 @@ internal static class ReflectionHelper
 		var props = foundType.GetProperties();
 		foreach ( var prop in props )
 		{
-			if (prop is null)
+			if ( prop is null )
 			{
 				continue;
 			}
 
 			var attrib = prop.GetCustomAttribute<BlitzFuncArgIndexAttribute>();
-			if (attrib is null)
+			if ( attrib is null )
 			{
 				continue;
 			}

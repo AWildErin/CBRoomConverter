@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestPlatform.ObjectModel;
-
-namespace CBRoomConverter.Tests;
+﻿namespace CBRoomConverter.Tests;
 
 internal static class TestHelpers
 {

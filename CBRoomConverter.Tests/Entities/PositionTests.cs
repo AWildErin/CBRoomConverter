@@ -1,13 +1,5 @@
-﻿using AWildErin.Utility;
-using CBRoomConverter.Converters;
-using CBRoomConverter.Models;
+﻿using CBRoomConverter.Models;
 using NUnit.Framework.Internal;
-using OpenTK.Mathematics;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text.Encodings.Web;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace CBRoomConverter.Tests.Entities;
 
@@ -38,8 +30,8 @@ internal class PositionTests
 	public void PositionEntity()
 	{
 		var room = TestRoomList.Rooms["PositionEntity"];
-		var ent = room.FindEntity( "r\\Objects[2]");
-		Assert.That(ent, Is.Not.Null );
+		var ent = room.FindEntity( "r\\Objects[2]" );
+		Assert.That( ent, Is.Not.Null );
 
 		Assert.That( ent.Position.X, Is.EqualTo( 0f ).Within( 0.1f ) );
 		Assert.That( ent.Position.Y, Is.EqualTo( 100f ).Within( 0.1f ) );
@@ -53,8 +45,8 @@ internal class PositionTests
 		var ent = room.FindEntity( "r\\Objects[2]" );
 		Assert.That( ent, Is.Not.Null );
 
-		Assert.That( ent.Position.X, Is.EqualTo( 0f ).Within( 0.1f ));
-		Assert.That( ent.Position.Y, Is.EqualTo( 170.771f ).Within( 0.1f ));
+		Assert.That( ent.Position.X, Is.EqualTo( 0f ).Within( 0.1f ) );
+		Assert.That( ent.Position.Y, Is.EqualTo( 170.771f ).Within( 0.1f ) );
 		Assert.That( ent.Position.Z, Is.EqualTo( 70.7107f ).Within( 0.1f ) );
 	}
 

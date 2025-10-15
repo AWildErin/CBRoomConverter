@@ -1,6 +1,6 @@
-﻿using CBRoomConverter.Enums;
+﻿using AWildErin.Utility;
+using CBRoomConverter.Enums;
 using CBRoomConverter.Models;
-using AWildErin.Utility;
 using IniParser;
 using IniParser.Model;
 

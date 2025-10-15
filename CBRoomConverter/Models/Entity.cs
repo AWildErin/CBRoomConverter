@@ -1,5 +1,4 @@
 ﻿using CBRoomConverter.Enums;
-using CBRoomConverter.Helpers;
 using OpenTK.Mathematics;
 using System.Text.Json.Serialization;
 

@@ -7,7 +7,7 @@ internal class EntityHelpers
 {
 	private static readonly Regex posNumberRegex = new( @"([+\-*/]\s*|\b)(\d+(?:\.\d+)?)" );
 
-	public static float EvaluateExpression(string Input)
+	public static float EvaluateExpression( string Input )
 	{
 		// Strip room accessors
 		// @todo	Is there any instances where room accessors are used to multiply?

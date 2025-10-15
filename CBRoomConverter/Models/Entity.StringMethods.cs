@@ -1,5 +1,4 @@
 ﻿using CBRoomConverter.Helpers;
-using OpenTK.Mathematics;
 
 namespace CBRoomConverter.Models;
 
