@@ -15,15 +15,49 @@ internal partial class Entity
 	public Quaternion Rotation { get; set; } = new( 0f, 0f, 0f, 1f );
 
 	public Dictionary<string, string> Properties { get; set; } = new();
-	public List<Entity> ChildEntities { get; set; } = new();
+	public HashSet<Entity> ChildEntities { get; set; } = new();
 
 
 	[JsonIgnore]
 	public Room? OwnerRoom { get; set; }
 
+	[JsonIgnore]
+	public Entity? Parent { get; set; }
+
 	public Entity? FindChildEntity( string Name )
 	{
 		return ChildEntities.Where( x => x.Name == Name ).FirstOrDefault();
+	}
+
+	public void SetParent( Entity? NewParent )
+	{
+		// We're already parented to this entity, so just early return
+		if ( NewParent == Parent )
+		{
+			return;
+		}
+
+		// Remove our parent association
+		if ( NewParent is null )
+		{
+			if ( Parent is not null )
+			{
+				Parent.ChildEntities.Remove( this );
+			}
+
+			Parent = null;
+
+			return;
+		}
+
+		// Remove ourselves from our current parent
+		if ( Parent is not null )
+		{
+			Parent.ChildEntities.Remove( this );
+		}
+
+		Parent = NewParent;
+		Parent.ChildEntities.Add( this );
 	}
 
 	// bb func: RotateEntity

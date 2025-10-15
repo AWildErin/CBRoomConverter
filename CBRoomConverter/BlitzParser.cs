@@ -331,7 +331,7 @@ internal partial class BlitzParser
 
 		// Expand any accessors
 		var funcArgs = ExtractArgsFromString( funcArguments );
-		for ( var i = 0; i < funcArgs.Count; i++)
+		for ( var i = 0; i < funcArgs.Count; i++ )
 		{
 			var arg = funcArgs[i];
 
@@ -468,6 +468,19 @@ internal partial class BlitzParser
 						}
 					}
 
+					break;
+				}
+
+			case "EntityParent":
+				{
+					var args = (EntityParentFuncArgs)funcArgsObj;
+					if ( !EntityParent( Room, args ) )
+					{
+						if ( Opts is not null && Opts.Verbose )
+						{
+							Log.Warn( $"Failed to parent entity, {args.entity} to {args.parent}." );
+						}
+					}
 					break;
 				}
 

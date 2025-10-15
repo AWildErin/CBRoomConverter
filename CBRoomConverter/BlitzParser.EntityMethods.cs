@@ -25,16 +25,40 @@ internal partial class BlitzParser
 
 		if ( FuncArgs.parent is not null )
 		{
-
-			if ( newEnt.Properties.ContainsKey( "parent" ) )
+			// Find the entity and set it as the parent
+			var parent = Room.FindEntity( FuncArgs.parent, true );
+			if ( parent is not null )
 			{
-				newEnt.Properties["parent"] = FuncArgs.parent;
+				newEnt.SetParent( parent );
 			}
 			else
 			{
-				newEnt.Properties.Add( "parent", FuncArgs.parent );
+				Log.Error( $"Failed to find parent entity with name {FuncArgs.parent}" );
+				return false;
 			}
 		}
+
+		return true;
+	}
+
+	private static bool EntityParent( Room Room, EntityParentFuncArgs FuncArgs )
+	{
+		var childEnt = Room.FindEntity( FuncArgs.entity, true );
+		var parentEnt = Room.FindEntity( FuncArgs.parent, true );
+
+		if ( childEnt is null )
+		{
+			Log.Error( $"Failed to find entity with name {FuncArgs.entity}" );
+			return false;
+		}
+
+		if ( parentEnt is null )
+		{
+			Log.Error( $"Failed to find parent entity with name {FuncArgs.parent}" );
+			return false;
+		}
+
+		childEnt.SetParent( parentEnt );
 
 		return true;
 	}

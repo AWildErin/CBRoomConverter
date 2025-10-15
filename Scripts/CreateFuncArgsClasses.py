@@ -28,6 +28,7 @@ decls = [
     # BB Funcs
     'Function CopyEntity(entity, parent=0)',
     'Function CreatePivot(parent=0)',
+    'Function EntityParent(entity, parent, global=1)',
 
     # Positional/Rotational Funcs
 	'Function PositionEntity(entity, x, y, z, global=0)',
@@ -38,6 +39,14 @@ decls = [
 	'Function TurnEntity(entity, pitch, yaw, roll, global=0)',
 
 	'Function ScaleEntity(entity, x_scale, y_scale, z_scale, global=0)',
+
+    # Accessors
+	'Function EntityX(entity, global=0)',
+	'Function EntityY(entity, global=0)',
+	'Function EntityZ(entity, global=0)',
+	'Function EntityPitch(entity, global=0)',
+	'Function EntityYaw(entity, global=0)',
+	'Function EntityRoll(entity, global=0)',
 ]
 
 def extract_name_from_type(name_with_type) -> str:
