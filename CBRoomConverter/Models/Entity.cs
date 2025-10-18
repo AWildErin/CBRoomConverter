@@ -17,6 +17,9 @@ internal partial class Entity
 	public Dictionary<string, string> Properties { get; set; } = new();
 	public HashSet<int> ChildEntityIndexes { get; set; } = new();
 
+	// here so we can directly check to see if it's a child in Unreal
+	public int ParentIndex { get; set; } = -1;
+
 	[JsonIgnore]
 	public Room? OwnerRoom { get; set; }
 
@@ -61,7 +64,7 @@ internal partial class Entity
 		}
 
 		int entityIndex = OwnerRoom.GetEntityIndex( this );
-		if (  entityIndex == -1 )
+		if ( entityIndex == -1 )
 		{
 			Log.Error( $"Cannot set parent on {Name}, failed to get entity index." );
 			return;
@@ -76,6 +79,7 @@ internal partial class Entity
 			}
 
 			Parent = null;
+			ParentIndex = -1;
 
 			return;
 		}
@@ -88,6 +92,7 @@ internal partial class Entity
 
 		Parent = NewParent;
 		Parent.ChildEntityIndexes.Add( entityIndex );
+		ParentIndex = OwnerRoom.GetEntityIndex( Parent );
 	}
 
 	// bb func: RotateEntity
