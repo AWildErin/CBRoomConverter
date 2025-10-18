@@ -1,4 +1,5 @@
-﻿using CBRoomConverter.Enums;
+﻿using AWildErin.Utility;
+using CBRoomConverter.Enums;
 using CBRoomConverter.FunctionArguments;
 using CBRoomConverter.Models;
 
@@ -44,13 +45,7 @@ internal partial class BlitzParser
 			entName = EntityName;
 		}
 
-		var ent = new Entity()
-		{
-			Type = EntityType,
-			Name = entName
-		};
-
-		Room.Entities.Add( ent );
+		var ent = Room.CreateNewEntity( entName, EntityType );
 
 		if ( Room.InternalNameToEntity.ContainsKey( EntityName ) )
 		{
@@ -76,16 +71,16 @@ internal partial class BlitzParser
 		var ent = CreateEntity( Room, FuncArgs.VariableName, ESCPCBRoomCreatorEntityType.Door );
 
 		// Add child buttons
-		var button = new Entity();
-		button.Name = "buttons[0]";
-		ent.ChildEntities.Add( button );
+		// These names are not great in the global scope but should generally be fine to handle.
+		var button = Room.CreateNewEntity( "buttons[0]", ESCPCBRoomCreatorEntityType.Button );
+		button.SetParent( ent );
 
-		button = new Entity();
-		button.Name = "buttons[1]";
-		ent.ChildEntities.Add( button );
+		button = Room.CreateNewEntity( "buttons[1]", ESCPCBRoomCreatorEntityType.Button );
+		button.SetParent( ent );
 
 		FuncArgs.AddPropertiesToEntity( ent );
 		ent.SetPosition( FuncArgs.x, FuncArgs.y, FuncArgs.z );
+		ent.SetAngles( "0", FuncArgs.angle, "0" );
 
 		return true;
 	}

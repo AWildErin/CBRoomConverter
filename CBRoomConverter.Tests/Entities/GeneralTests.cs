@@ -25,7 +25,8 @@ internal class GeneralTests
 		Assert.That( parent, Is.Not.Null );
 		Assert.That( child, Is.Not.Null );
 
+		int entityIndex = room.GetEntityIndex( child );
 		Assert.That( child.Parent, Is.EqualTo( parent ) );
-		Assert.That( parent.ChildEntities.Contains( child ), Is.True );
+		Assert.That( parent.ChildEntityIndexes.Contains( entityIndex ), Is.True );
 	}
 }

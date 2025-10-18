@@ -26,8 +26,9 @@ internal class Room
 	public string? DataDirectory { get; set; }
 	public string? ArtDirectory { get; set; }
 
-	// Filled from supplied MapSystem.bb
-	public List<Entity> Entities { get; set; } = new List<Entity>();
+	// Add entities via CreateNewEntity, not setting the list manually
+	private readonly List<Entity> entityList = new();
+	public IReadOnlyList<Entity> Entities => entityList;
 
 
 	// An internal map so we can create instances of names as needed.
@@ -65,5 +66,35 @@ internal class Room
 		}
 
 		return null;
+	}
+
+	public int GetEntityIndex( Entity? Entity )
+	{
+		if ( Entity is null )
+		{
+			return -1;
+		}
+
+		return entityList.IndexOf( Entity );
+	}
+
+	// Does NOT populate the entity name into InternalNameToEntity, it is not generally needed.
+	// This function mostly exists to handle creating entities for children, which means that map
+	// cannot be updated with each new entity made.
+	public Entity CreateNewEntity( string Name, ESCPCBRoomCreatorEntityType EntityType )
+	{
+		var ent = new Entity();
+		ent.Name = Name;
+		ent.Type = EntityType;
+		ent.OwnerRoom = this;
+
+		entityList.Add( ent );
+
+		return ent;
+	}
+
+	public bool RemoveEntity( Entity Entitiy )
+	{
+		return entityList.Remove( Entitiy );
 	}
 }

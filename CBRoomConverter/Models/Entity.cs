@@ -1,4 +1,5 @@
-﻿using CBRoomConverter.Enums;
+﻿using AWildErin.Utility;
+using CBRoomConverter.Enums;
 using OpenTK.Mathematics;
 using System.Text.Json.Serialization;
 
@@ -14,8 +15,7 @@ internal partial class Entity
 	public Quaternion Rotation { get; set; } = new( 0f, 0f, 0f, 1f );
 
 	public Dictionary<string, string> Properties { get; set; } = new();
-	public HashSet<Entity> ChildEntities { get; set; } = new();
-
+	public HashSet<int> ChildEntityIndexes { get; set; } = new();
 
 	[JsonIgnore]
 	public Room? OwnerRoom { get; set; }
@@ -25,7 +25,25 @@ internal partial class Entity
 
 	public Entity? FindChildEntity( string Name )
 	{
-		return ChildEntities.Where( x => x.Name == Name ).FirstOrDefault();
+		// Children can only exist in the same room
+		if ( OwnerRoom is null )
+		{
+			return null;
+		}
+
+		foreach ( var index in ChildEntityIndexes )
+		{
+			Entity? entity = OwnerRoom.Entities.ElementAtOrDefault( index );
+
+			// Check to see if our entity matches what we want
+			if ( entity is not null && entity.Name is not null && entity.Name.Equals( Name ) )
+			{
+				return entity;
+			}
+		}
+
+		// Didn't find any entities
+		return null;
 	}
 
 	public void SetParent( Entity? NewParent )
@@ -36,12 +54,25 @@ internal partial class Entity
 			return;
 		}
 
+		if ( OwnerRoom is null )
+		{
+			Log.Error( $"Cannot set parent on {Name}, owner room null" );
+			return;
+		}
+
+		int entityIndex = OwnerRoom.GetEntityIndex( this );
+		if (  entityIndex == -1 )
+		{
+			Log.Error( $"Cannot set parent on {Name}, failed to get entity index." );
+			return;
+		}
+
 		// Remove our parent association
 		if ( NewParent is null )
 		{
 			if ( Parent is not null )
 			{
-				Parent.ChildEntities.Remove( this );
+				Parent.ChildEntityIndexes.Remove( entityIndex );
 			}
 
 			Parent = null;
@@ -52,11 +83,11 @@ internal partial class Entity
 		// Remove ourselves from our current parent
 		if ( Parent is not null )
 		{
-			Parent.ChildEntities.Remove( this );
+			Parent.ChildEntityIndexes.Remove( entityIndex );
 		}
 
 		Parent = NewParent;
-		Parent.ChildEntities.Add( this );
+		Parent.ChildEntityIndexes.Add( entityIndex );
 	}
 
 	// bb func: RotateEntity

@@ -14,7 +14,7 @@ internal partial class BlitzParser
 		var origEnt = Room.InternalNameToEntity.GetValueOrDefault( newEnt.Name! );
 		if ( origEnt is null )
 		{
-			Room.Entities.Remove( newEnt );
+			Room.RemoveEntity( newEnt );
 			return false;
 		}
 
