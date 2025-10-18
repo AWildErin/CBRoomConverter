@@ -16,3 +16,6 @@ Case "room2_4"
 	EntityParent(r\Objects[6], r\obj)
 	;[End Block]
 ```
+
+## Developer notes
+- B3D -> Unreal Vectors must be ZXY

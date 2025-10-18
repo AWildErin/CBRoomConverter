@@ -18,4 +18,7 @@ internal class Options
 
 	[Option( 'v', "verbose", HelpText = "Enables additional logging" )]
 	public bool Verbose { get; set; }
+
+	[Option( 'u', "unreal", HelpText = "Enables exporting vectors in Unreal format (It needs to be Z X Y from Blitz3D)" )]
+	public bool UnrealVectors { get; set; }
 }

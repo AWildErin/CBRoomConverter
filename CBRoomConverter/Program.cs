@@ -66,7 +66,7 @@ internal class Program
 			DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
 			Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
 		};
-		jsonOpts.Converters.Add( new Vector3Converter() );
+		jsonOpts.Converters.Add( new Vector3Converter( opts.UnrealVectors ) );
 		jsonOpts.Converters.Add( new QuaternionConverter() );
 		jsonOpts.Converters.Add( new JsonStringEnumConverter() );
 
